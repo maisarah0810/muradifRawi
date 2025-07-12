@@ -3,15 +3,15 @@ import re
 from preprocessing import preprocess_query
 
 def load_index(filepath):
-    index = {}
-    with open(filepath, 'r', encoding='utf-8') as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    full_path = os.path.join(base_dir, filepath)
+
+    with open(full_path, 'r', encoding='utf-8') as f:
+        index = {}
         for line in f:
-            parts = line.strip().split(':')
-            if len(parts) == 2:
-                key = preprocess_query(parts[0])
-                doc_ids = parts[1].strip().split(',')
-                index[key] = [doc.strip() for doc in doc_ids]
-    return index
+            key, *values = line.strip().split(':')
+            index[key] = values[0].split(',') if values else []
+        return index
 
 
 def load_thesaurus(filepath):
