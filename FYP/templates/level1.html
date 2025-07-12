@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>muradifRawi</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="top-buttons">
+    <form method="get" action="{{ url_for('index') }}">
+        <button type="submit">LOGOUT</button>
+    </form>
+    <a href="{{ url_for('login_route') }}">
+        <button>LOGIN</button>
+    </a>
+</div>
+
+<h1>muradifRawi</h1>
+<p class="subtitle">RETRIEVE HADITS BASED ON THE SYNONYMS OF NARRATOR’S NAME USING BOOLEAN MODEL</p>
+
+<div class="search-box">
+    <form method="POST" action="/level1">
+        <input type="hidden" name="form_type" value="search">
+        {% for entry in added_entries %}
+            <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
+        {% endfor %}
+        <input type="text" name="narrator_name" placeholder="Enter narrator name" required>
+        <br>
+        <button type="submit">search</button>
+    </form>
+</div>
+
+<div class="flex-container">
+    <!-- Add New Name Box (Left) -->
+    <div class="flex-box box">
+        <h2>Add new name</h2>
+        <form method="POST" action="/level1">
+            <input type="hidden" name="form_type" value="add">
+            <label>Name:</label><br>
+            <input type="text" name="base_name" required><br>
+
+            <label>Synonym:</label><br>
+            <input type="text" name="new_synonym" required><br>
+
+            <label>Index:</label><br>
+            <input type="text" name="index" required><br>
+
+            <button type="submit">submit</button>
+        </form>
+    </div>
+
+    <!-- Search Results (Center) -->
+    {% if name and synonyms %}
+    <div class="flex-box result-box">
+        <h2>Results for: {{ name }}</h2>
+
+        <div class="section">
+            <h3>Synonyms</h3>
+            {% if synonyms %}
+                <ul>
+                    {% for synonym in synonyms %}
+                        <li>{{ synonym }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No synonyms found.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h3>Related Hadith Documents</h3>
+            {% if documents %}
+                    {% for doc in documents %}
+                    <div class="doc" style="font-size: 1.2em; color: #000; margin-bottom: 24px;">
+                        <h4 style="color: #000;">{{ doc.filename }}</h4>
+                        <pre style="font-size: 1.1em; color: #000; text-align: justify;">{{ doc.content | safe }}</pre>
+                    </div>
+                    {% endfor %}
+            {% else %}
+                <p>No related documents found.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="flex-box result-box" style="visibility: hidden;"></div>
+    {% endif %}
+
+    <!-- Pending Names Box (Right) -->
+    <div class="flex-box box">
+        <h2>Pending names</h2>
+        {% if added_entries %}
+            <ul style="font-size: 1.1em;">
+                {% for entry in added_entries %}
+                    <li>
+                        Name: {{ entry['base_name'] }}<br>
+                        Synonym: {{ entry['synonym'] }}<br>
+                        Index: {{ entry['index_value'] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No new entries submitted.</p>
+        {% endif %}
+
+        <button onclick="showNotQualifiedAlert()">Verify</button>
+        <a href="{{ url_for('download_thesaurus') }}">
+            <button style="margin-top: 20px;">Download Thesaurus PDF</button>
+        </a>
+    </div>
+</div>
+
+
+
+
+<!-- Flash Message -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <script>
+      Swal.fire({
+        icon: "{{ messages[0][0] }}",
+        title: "{{ 'Error' if messages[0][0]=='error' else 'Notice' }}",
+        text: "{{ messages[0][1] }}"
+      });
+    </script>
+  {% endif %}
+{% endwith %}
+
+<!-- SweetAlert2 Verification -->
+<script>
+  function showNotQualifiedAlert() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Access Denied',
+      text: "You're not qualified to verify.",
+      showCloseButton: true,
+      confirmButtonText: 'Login'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "{{ url_for('login_route') }}";
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>muradifRawi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleIndex.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+     <!-- ✅ SweetAlert2 Flash Message -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <script>
+              Swal.fire({
+                icon: "{{ messages[0][0] }}",  // e.g., "error", "success", "warning", "info"
+                title: "{{ 'Error' if messages[0][0]=='error' else 'Notice' }}",
+                text: "{{ messages[0][1] }}",
+                //confirmButtonText: 'OK'
+              });
+            </script>
+          {% endif %}
+        {% endwith %}
+
+        <a href="{{ url_for('login_route') }}">
+        <button class="login-button">Login</button>
+    </a>
+
+    <div class="landing-container" style="display: flex; flex-direction: row; justify-content: flex-start; max-width: 1400px; margin: 0 auto; gap: 100px;">
+        <div class="main-content" style="flex: 0 1 600px; text-align: center;">
+            <h1>muradifRawi</h1>
+            <p class="subtitle">RETRIEVE HADITHS BASED ON SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
+
+            <form method="POST" action="/" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <input type="hidden" name="form_type" value="search">
+                {% for entry in added_entries %}
+                    <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
+                {% endfor %}
+                <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+            </form>
+
+            {% if name and synonyms %}
+                <div class="results">
+                    <h2>Results for: {{ name }}</h2>
+
+                    <div class="section">
+                        <h3>Synonyms</h3>
+                        {% if synonyms %}
+                            <ul>
+                                {% for synonym in synonyms %}
+                                    <li>{{ synonym }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No synonyms found.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="section">
+                        <h3>Related Hadith Documents</h3>
+                        {% if documents %}
+                            {% for doc in documents %}
+                                <div class="doc" style="font-size: 1.0em; color: #000; margin-bottom: 24px;">
+                                    <h4 style="color: #000;">{{ doc.filename }}</h4>
+                                    <pre style="font-size: 1.1em; color: #000;text-align: justify;">{{ doc.content | safe }}</pre>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No related documents found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="add-name-box" style="text-align: center; margin-top: 30px;">
+                <h2>Want to add synonym names?</h2>
+
+                {% if added_entries %}
+                    <div style="margin: 20px 0;">
+                        {% for entry in added_entries %}
+                            <div style="background: #f9f9f9; border-radius: 8px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1.1em;">
+                                <div style="margin-bottom: 8px;">
+                                    <strong style="color: #333;">Name:</strong> 
+                                    <span style="color: #666;">{{ entry['base_name'] }}</span>
+                                </div>
+                                <div style="margin-bottom: 8px;">
+                                    <strong style="color: #333;">Synonym:</strong> 
+                                    <span style="color: #666;">{{ entry['synonym'] }}</span>
+                                </div>
+                                <div>
+                                    <strong style="color: #333;">Index:</strong> 
+                                    <span style="color: #666;">{{ entry['index_value'] }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <button onclick="showNotQualifiedAlert()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Add name</button>
+            </div>
+        </div>
+
+        <!-- Hadith Slider Box -->
+        <div id="hadith-slider" style="width: 450px; height: 500px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px; margin-left: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px;">
+            <h3 style="margin-top: 0; font-weight: bold; color: #000;">Hadith Of The Day</h3>
+            <div id="hadith-content" style="height: 450px; text-align: left; font-size: 1.3em; margin-bottom: 16px; color: #000; line-height: 1.4; overflow-y: auto; padding: 15px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
+                Loading...
+            </div>
+            <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>
+            <div style="display: flex; gap: 16px;">
+                <button onclick="prevHadith()" style="font-size: 1.5em; background: none; border: none; cursor: pointer; color: #000;">&#8592;</button>
+                <button onclick="nextHadith()" style="font-size: 1.5em; background: none; border: none; cursor: pointer; color: #000;">&#8594;</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Hadiths loaded from Flask backend
+let hadiths = [];
+let currentHadith = 0;
+
+// Try to load hadiths from Flask
+try {
+    // Read from JSON script tag
+    const hadithScript = document.getElementById('hadith-data');
+    if (hadithScript) {
+        hadiths = JSON.parse(hadithScript.textContent);
+        console.log('Loaded hadiths from JSON script:', hadiths);
+    } else {
+        console.error('Hadith data script not found');
+        hadiths = ["Error: Hadith data not found"];
+    }
+    console.log('Number of hadiths:', hadiths ? hadiths.length : 0);
+} catch (error) {
+    console.error('Error parsing hadiths:', error);
+    console.error('Error details:', error.message);
+    hadiths = ["Error loading hadiths - check console for details"];
+}
+
+function showHadith(idx) {
+    console.log('Showing hadith at index:', idx);
+    const contentDiv = document.getElementById('hadith-content');
+    if (hadiths && hadiths.length > 0 && idx < hadiths.length) {
+        contentDiv.textContent = hadiths[idx];
+    } else {
+        contentDiv.textContent = "No hadiths available";
+    }
+}
+
+function prevHadith() {
+    if (hadiths && hadiths.length > 0) {
+        currentHadith = (currentHadith - 1 + hadiths.length) % hadiths.length;
+        showHadith(currentHadith);
+    }
+}
+
+function nextHadith() {
+    if (hadiths && hadiths.length > 0) {
+        currentHadith = (currentHadith + 1) % hadiths.length;
+        showHadith(currentHadith);
+    }
+}
+
+// Auto-slide functionality
+let autoSlideInterval;
+
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        nextHadith();
+    }, 3000); // Change hadith every 3 seconds
+}
+
+function stopAutoSlide() {
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, showing first hadith');
+    showHadith(currentHadith);
+    
+    // Start auto-sliding
+    startAutoSlide();
+    
+    // Pause auto-slide when user hovers over the hadith box
+    const hadithSlider = document.getElementById('hadith-slider');
+    if (hadithSlider) {
+        hadithSlider.addEventListener('mouseenter', stopAutoSlide);
+        hadithSlider.addEventListener('mouseleave', startAutoSlide);
+    }
+});
+
+  function showNotQualifiedAlert() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Access Denied',
+      text: "You're not qualified to verify.",
+      showCloseButton: true,
+      //showCancelButton: true,
+      confirmButtonText: 'Login',
+      //cancelButtonText: 'Close',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "{{ url_for('login_route') }}";  // redirect to login
+      }
+    });
+  }
+</script>
+</body>
+</html>

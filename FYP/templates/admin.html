@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <!-- Add New User Form -->
+        <h2>Add New User</h2>
+        <form method="post">
+            <input type="hidden" name="form_type" value="add_user">
+
+            <label>Full Name:</label>
+            <input type="text" name="full_name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Position:</label>
+            <input type="text" name="position" required>
+
+            <label>Level (0 = Admin, 1 = Level1, 2 = Level2):</label>
+            <input type="number" name="level" min="0" max="2" required>
+
+            <input type="submit" value="Add User">
+        </form>
+
+
+
+        <!-- Logout Button -->
+        <form method="get" action="{{ url_for('index') }}">
+            <button type="submit">Logout</button>
+        </form>
+
+        <!-- SweetAlert for Flash Messages -->
+        {% if message %}
+        <script>
+            Swal.fire({
+                title: "{{ 'Success' if category == 'success' else 'Warning' if category == 'warning' else 'Error' }}",
+                text: "{{ message }}",
+                icon: "{{ category }}",
+                confirmButtonText: 'OK'
+            });
+        </script>
+        {% endif %}
+
+        <button type="button" class="user-list-btn" onclick="openUserList()">User List</button>
+    </div>
+
+    <div id="userSidePanel" class="side-panel">
+        <span class="close-btn" onclick="closeUserList()">&times;</span>
+        <h2>Existing Users</h2>
+        <div id="userList">
+            {% for user in users %}
+            <div class="user-item">
+                <div class="user-info">
+                    <strong>{{ user.fullname }}</strong><br>
+                    <small>{{ user.email }}</small><br>
+                    <small>Position: {{ user.position }} | Level: {{ user.level }}</small>
+                </div>
+                <button type="button" class="update-btn" 
+                        data-user-id="{{ user.id }}"
+                        data-fullname="{{ user.fullname }}"
+                        data-email="{{ user.email }}"
+                        data-position="{{ user.position }}"
+                        data-level="{{ user.level }}"
+                        onclick="showUpdateForm(this)">Update</button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div id="updateForm" style="display: none;">
+            <h3>Update User</h3>
+            <form method="post">
+                <input type="hidden" name="form_type" value="update_user">
+                <input type="hidden" name="user_id" id="edit_user_id">
+
+                <label>Full Name:</label>
+                <input type="text" name="edit_fullname" id="edit_fullname" required>
+
+                <label>Email:</label>
+                <input type="email" name="edit_email" id="edit_email" required>
+
+                <label>Position:</label>
+                <input type="text" name="edit_position" id="edit_position" required>
+
+                <label>Level:</label>
+                <input type="number" name="edit_level" id="edit_level" min="0" max="2" required>
+
+                <input type="submit" value="Update User">
+                <button type="button" onclick="showUserList()" class="cancel-btn">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function openUserList() {
+        document.getElementById("userSidePanel").style.width = "400px";
+        document.querySelector(".user-list-btn").classList.add("shifted");
+    }
+    function closeUserList() {
+        document.getElementById("userSidePanel").style.width = "0";
+        document.querySelector(".user-list-btn").classList.remove("shifted");
+    }
+    
+    function showUpdateForm(button) {
+        document.getElementById("userList").style.display = "none";
+        document.getElementById("updateForm").style.display = "block";
+        
+        document.getElementById("edit_user_id").value = button.getAttribute('data-user-id');
+        document.getElementById("edit_fullname").value = button.getAttribute('data-fullname');
+        document.getElementById("edit_email").value = button.getAttribute('data-email');
+        document.getElementById("edit_position").value = button.getAttribute('data-position');
+        document.getElementById("edit_level").value = button.getAttribute('data-level');
+    }
+    
+    function showUserList() {
+        document.getElementById("userList").style.display = "block";
+        document.getElementById("updateForm").style.display = "none";
+    }
+    </script>
+</body>
+</html>
