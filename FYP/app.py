@@ -33,11 +33,10 @@ mail = Mail(app)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HADITH_FOLDER = os.path.join(BASE_DIR, 'docs', 'ShahihBukhari')
 
-PENDING_PATH = os.path.join('FYP', 'index', 'pending.json')
+PENDING_PATH = os.path.join(BASE_DIR, 'index', 'pending.json')
+index_data = load_index(os.path.join(BASE_DIR, 'index', 'narratorindex.txt'))
+thesaurus_data = load_thesaurus(os.path.join(BASE_DIR, 'index', 'thesaurusnarrator.txt'))
 
-# Load once
-index_data = load_index(os.path.join('FYP', 'index', 'narratorindex.txt'))
-thesaurus_data = load_thesaurus(os.path.join('FYP', 'index', 'thesaurusnarrator.txt'))
 
 def load_pending_entries():
     if os.path.exists(PENDING_PATH):
@@ -148,7 +147,7 @@ def index():
 @app.route('/download_thesaurus')
 def download_thesaurus():
     # Paths
-    thesaurus_path = os.path.join('FYP', 'index', 'thesaurusnarrator.txt')
+    thesaurus_path = os.path.join(BASE_DIR, 'index', 'thesaurusnarrator.txt')
     pdf_filename = 'thesaurus_narrator.pdf'
     pdf_path = os.path.join(BASE_DIR, pdf_filename)
 
