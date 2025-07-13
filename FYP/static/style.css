@@ -232,6 +232,23 @@ input[type="submit"], button {
     margin-top: 40px;
 }
 
+#userList {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.user-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .user-box {
     border: 1px solid #ccc;
     padding: 15px;
@@ -250,6 +267,7 @@ input[type="submit"], button {
     right: 0;
     background-color: #fff;
     overflow-x: hidden;
+    overflow-y: auto;
     transition: 0.5s;
     padding: 60px 10px 10px 10px;
     box-shadow: -2px 0 5px rgba(0,0,0,0.2);
@@ -285,23 +303,21 @@ input[type="submit"], button {
     right: 420px;
 }
 
-.user-item {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .user-info {
     flex: 1;
 }
 
 .update-btn {
     background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: #dc3545;
     color: white;
     border: none;
     padding: 8px 16px;

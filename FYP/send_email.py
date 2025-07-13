@@ -1,12 +1,15 @@
 from mailjet_rest import Client
+import os
 
 API_KEY = '2889beeb8413007e0146f4d1a3dee5f7'
 API_SECRET = '588088681208fb358b7832e7ec18a8d7'
 
 mailjet = Client(auth=(API_KEY, API_SECRET), version='v3.1')
 
-def send_password_email(to_email,fullname, password):
-    reset_link = f"http://localhost:5000/reset-password?email={to_email}"
+def send_password_email(to_email, fullname, password):
+    # Get the base URL from environment variable or default to localhost
+    base_url = os.getenv('BASE_URL', 'http://localhost:5000')
+    reset_link = f"{base_url}/reset-password?email={to_email}"
 
     data = {
         'Messages': [
@@ -29,7 +32,7 @@ def send_password_email(to_email,fullname, password):
                     <p><strong>{password}</strong></p>
                     <p>To change your password, click the button below:</p>
                     <p><a href="{reset_link}" style="background-color:#4CAF50;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;">Reset Password</a></p>
-                    <p>If the button doesn’t work, copy and paste this URL in your browser:</p>
+                    <p>If the button doesn't work, copy and paste this URL in your browser:</p>
                     <p>{reset_link}</p>
                 """
             }

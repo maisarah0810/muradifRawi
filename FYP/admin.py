@@ -64,6 +64,23 @@ def admin():
                     message = "User updated successfully."
                     message_category = "success"
 
+            elif form_type == 'delete_user':
+                user_id = request.form['user_id']
+
+                with conn.cursor() as cursor:
+                    # Get user info for confirmation message
+                    cursor.execute("SELECT fullname FROM user WHERE id = %s", (user_id,))
+                    user = cursor.fetchone()
+                    
+                    if user:
+                        cursor.execute("DELETE FROM user WHERE id = %s", (user_id,))
+                        conn.commit()
+                        message = f"User '{user['fullname']}' deleted successfully."
+                        message_category = "success"
+                    else:
+                        message = "User not found."
+                        message_category = "warning"
+
         # ✅ Always fetch updated user list
         with conn.cursor() as cursor:
             cursor.execute("SELECT id, fullname, email, position, level FROM user ORDER BY id ASC")

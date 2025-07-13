@@ -63,13 +63,19 @@
                     <small>{{ user.email }}</small><br>
                     <small>Position: {{ user.position }} | Level: {{ user.level }}</small>
                 </div>
-                <button type="button" class="update-btn" 
-                        data-user-id="{{ user.id }}"
-                        data-fullname="{{ user.fullname }}"
-                        data-email="{{ user.email }}"
-                        data-position="{{ user.position }}"
-                        data-level="{{ user.level }}"
-                        onclick="showUpdateForm(this)">Update</button>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="update-btn" 
+                            data-user-id="{{ user.id }}"
+                            data-fullname="{{ user.fullname }}"
+                            data-email="{{ user.email }}"
+                            data-position="{{ user.position }}"
+                            data-level="{{ user.level }}"
+                            onclick="showUpdateForm(this)">Update</button>
+                    <button type="button" class="delete-btn" 
+                            data-user-id="{{ user.id }}"
+                            data-fullname="{{ user.fullname }}"
+                            onclick="confirmDelete(this)">Delete</button>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -122,6 +128,44 @@
     function showUserList() {
         document.getElementById("userList").style.display = "block";
         document.getElementById("updateForm").style.display = "none";
+    }
+
+    function confirmDelete(button) {
+        const userId = button.getAttribute('data-user-id');
+        const fullname = button.getAttribute('data-fullname');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to delete user "${fullname}"? This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Create and submit a form to delete the user
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ url_for("admin_bp.admin") }}';
+                
+                const formTypeInput = document.createElement('input');
+                formTypeInput.type = 'hidden';
+                formTypeInput.name = 'form_type';
+                formTypeInput.value = 'delete_user';
+                form.appendChild(formTypeInput);
+                
+                const userIdInput = document.createElement('input');
+                userIdInput.type = 'hidden';
+                userIdInput.name = 'user_id';
+                userIdInput.value = userId;
+                form.appendChild(userIdInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     }
     </script>
 </body>
