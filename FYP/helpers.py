@@ -57,12 +57,23 @@ def approve_entry(base_name, new_synonym, index_value):
 
     base_name_found = None
     updated_lines = []
+    base_name_existed = False
+    synonym_existed = False
 
     for line in lines:
         if ':' in line:
             existing_base, synonyms_str = line.strip().split(':', 1)
             synonyms = [s.strip() for s in synonyms_str.split(',')]
             all_names = [existing_base.strip()] + synonyms
+            
+            # Check if base name already exists
+            if preprocess_query(base_name) in [preprocess_query(n) for n in all_names]:
+                base_name_existed = True
+            
+            # Check if synonym already exists
+            if preprocess_query(new_synonym) in [preprocess_query(n) for n in all_names]:
+                synonym_existed = True
+            
             # Check if either name already exists
             if preprocess_query(base_name) in [preprocess_query(n) for n in all_names] or \
                preprocess_query(new_synonym) in [preprocess_query(n) for n in all_names]:
@@ -82,9 +93,37 @@ def approve_entry(base_name, new_synonym, index_value):
     # Write updated thesaurus
     with open(THESAURUS_PATH, 'w') as f:
         f.writelines(updated_lines)
-    # Write to index file
-    with open(INDEX_PATH, 'a') as f:
-        f.write(f"{new_synonym}: {formatted_index}\n")
+    
+    # Handle index file - check if synonym already exists
+    with open(INDEX_PATH, 'r') as f:
+        index_lines = f.readlines()
+    
+    updated_index_lines = []
+    synonym_found_in_index = False
+    
+    for line in index_lines:
+        if ':' in line:
+            existing_synonym, existing_index_str = line.strip().split(':', 1)
+            if preprocess_query(existing_synonym) == preprocess_query(new_synonym):
+                # Found existing synonym in index - merge index values
+                existing_index_list = [i.strip() for i in existing_index_str.split(',') if i.strip().isdigit()]
+                merged_index = sorted(set(existing_index_list + index_list), key=int)
+                merged_formatted = ", ".join(merged_index)
+                updated_line = f"{existing_synonym}: {merged_formatted}\n"
+                updated_index_lines.append(updated_line)
+                synonym_found_in_index = True
+            else:
+                updated_index_lines.append(line)
+        else:
+            updated_index_lines.append(line)
+    
+    # If synonym not found in index, add new entry
+    if not synonym_found_in_index:
+        updated_index_lines.append(f"{new_synonym}: {formatted_index}\n")
+    
+    # Write updated index file
+    with open(INDEX_PATH, 'w') as f:
+        f.writelines(updated_index_lines)
 
     # Remove from pending.json
     if os.path.exists(PENDING_PATH):
@@ -97,6 +136,13 @@ def approve_entry(base_name, new_synonym, index_value):
 
         with open(PENDING_PATH, 'w') as f:
             json.dump(updated_entries, f, indent=2)
+    
+    # Return information about what already existed
+    return {
+        'base_name_existed': base_name_existed,
+        'synonym_existed': synonym_existed,
+        'both_existed': base_name_existed and synonym_existed
+    }
 
 def reject_entry(new_name):
     # Just remove from pending
