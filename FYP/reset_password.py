@@ -12,6 +12,11 @@ def reset_password():
         new_password = request.form.get('new_password')
         confirm_password = request.form.get('confirm_password')
 
+        # Validate inputs
+        if not email or not new_password or not confirm_password:
+            flash("Please fill in all fields.", "error")
+            return redirect(url_for('reset_bp.reset_password'))
+
         # Validate password match
         if new_password != confirm_password:
             flash("Passwords do not match. Please try again.", "error")
@@ -19,6 +24,10 @@ def reset_password():
 
         # Connect to DB
         conn = get_db_connection()
+        if not conn:
+            flash("Database connection failed.", "error")
+            return redirect(url_for('reset_bp.reset_password'))
+        
         cursor = conn.cursor()
 
         # Check if user exists
