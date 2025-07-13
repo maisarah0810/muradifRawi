@@ -11,7 +11,8 @@ def load_index(filepath):
         index = {}
         for line in f:
             key, *values = line.strip().split(':')
-            index[key] = values[0].split(',') if values else []
+            # Strip spaces from each doc ID
+            index[key] = [v.strip() for v in values[0].split(',')] if values else []
         return index
 
 
