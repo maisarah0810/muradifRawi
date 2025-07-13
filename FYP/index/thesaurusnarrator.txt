@@ -1,4 +1,4 @@
-abdulaziz: abdulazizbinshuhaib, abdulazizbinabuhazim
+abdulaziz: abdulazizbinabuhazim, abdulazizbinshuhaib
 abdullah: abdullahbinalmubarak, ibnualmubarak, ibnumas'ud, Abu Mas'ud, abdullahbinmas'ud, ibnummiabd
 abdullahbinsyadad: abdullahbinsyaddad, abdullahbinsyidad
 albara: albarrobinazib

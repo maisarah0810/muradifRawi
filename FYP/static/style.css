@@ -19,7 +19,7 @@ body {
 }
 
 .top-buttons button {
-    background-color: #e8e8e8;
+    background-color: black;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
@@ -124,6 +124,217 @@ h1, h2 {
     }
 }
 
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    h1, h2 {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+    
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .top-buttons {
+        padding: 10px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .top-buttons form, .top-buttons a {
+        margin: 0;
+    }
+    
+    .top-buttons button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .search-box {
+        width: 95%;
+        margin: 20px auto;
+    }
+    
+    .search-box input[type="text"] {
+        width: 90%;
+        max-width: 280px;
+        font-size: 14px;
+        padding: 8px;
+    }
+    
+    .search-box button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .flex-container {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .flex-box {
+        width: 95%;
+        max-width: 350px;
+        padding: 15px;
+    }
+    
+    .result-box {
+        width: 95%;
+        max-width: 350px;
+        order: 3;
+        padding: 20px;
+    }
+    
+    .box {
+        width: 95%;
+        max-width: 350px;
+        padding: 15px;
+    }
+    
+    .box input[type="text"] {
+        width: 95%;
+        font-size: 14px;
+        padding: 6px;
+    }
+    
+    .box button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .results {
+        padding: 20px;
+        margin-top: 20px;
+        width: 95%;
+    }
+    
+    .doc {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .doc pre {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    
+    ul {
+        padding-left: 10px;
+    }
+    
+    /* Admin panel mobile adjustments */
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .user-list-btn {
+        position: fixed;
+        top: 20px;
+        right: 10px;
+        padding: 10px 5px;
+        font-size: 12px;
+        writing-mode: horizontal-tb;
+    }
+    
+    .side-panel {
+        width: 100%;
+        padding: 40px 10px 10px 10px;
+    }
+    
+    .user-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .update-btn, .cancel-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Extra small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: 20px;
+    }
+    
+    .subtitle {
+        font-size: 12px;
+    }
+    
+    .top-buttons button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .search-box input[type="text"] {
+        width: 95%;
+        font-size: 12px;
+        padding: 6px;
+    }
+    
+    .search-box button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .flex-box, .box, .result-box {
+        width: 98%;
+        padding: 10px;
+    }
+    
+    .box input[type="text"] {
+        width: 98%;
+        font-size: 12px;
+        padding: 4px;
+    }
+    
+    .box button {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    .results {
+        padding: 15px;
+        width: 98%;
+    }
+    
+    .doc {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .doc pre {
+        font-size: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+        width: 98%;
+    }
+    
+    .user-list-btn {
+        padding: 8px 4px;
+        font-size: 10px;
+    }
+    
+    .update-btn, .cancel-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+}
+
 .left-box, .right-box {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
@@ -179,13 +390,6 @@ ul {
 }
 
 
-
-@media (max-width: 768px) {
-    .content-wrapper {
-        flex-direction: column;
-        align-items: center;
-    }
-}
 
 /* Admin Panel Styles */
 .container {

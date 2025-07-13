@@ -10,10 +10,10 @@ from preprocessing import preprocess_query
 # Define correct absolute paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-INDEX_PATH = os.path.join(BASE_DIR, 'index', 'narratorindex.txt')
-THESAURUS_PATH = os.path.join(BASE_DIR, 'index', 'thesaurusnarrator.txt')
-PENDING_PATH = os.path.join(BASE_DIR, 'index', 'pending.json')
-HADITH_FOLDER = os.path.join(BASE_DIR, 'docs', 'ShahihBukhari')
+INDEX_PATH = os.path.join('index', 'narratorindex.txt')
+THESAURUS_PATH = os.path.join('index', 'thesaurusnarrator.txt')
+PENDING_PATH = os.path.join('index', 'pending.json')
+HADITH_FOLDER = os.path.join('docs', 'ShahihBukhari')
 
 # Load index and thesaurus once
 index = load_index(INDEX_PATH)
