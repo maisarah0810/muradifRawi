@@ -57,20 +57,24 @@ def level2():
 
 @level2_bp.route('/level2/approve', methods=['POST'])
 def approve_entry_route():
-    base_name = preprocess_query(request.form['base_name'])
-    new_synonym = preprocess_query(request.form['synonym'])
-    index_value = request.form.get('index_value', '') 
+    try:
+        base_name = preprocess_query(request.form['base_name'])
+        new_synonym = preprocess_query(request.form['synonym'])
+        index_value = request.form.get('index_value', '') 
 
-    # Call centralized logic and get result
-    result = approve_entry(base_name, new_synonym, index_value)
-    
-    # Check if both base name and synonym already existed
-    if result['both_existed']:
-        flash("Name already exists in thesaurus, but index has been updated", "info")
-    else:
-        flash("Name successfully approved!", "success")
-    
-    return redirect(url_for('level2_bp.level2'))
+        # Call centralized logic and get result
+        result = approve_entry(base_name, new_synonym, index_value)
+        
+        # Check if both base name and synonym already existed
+        if result['both_existed']:
+            flash("Name already exists in thesaurus, but index has been updated", "info")
+        else:
+            flash("Name successfully approved!", "success")
+        
+        return redirect(url_for('level2_bp.level2'))
+    except Exception as e:
+        flash(f"Error processing request: {str(e)}", "error")
+        return redirect(url_for('level2_bp.level2'))
 
 
 @level2_bp.route('/level2/reject', methods=['POST'])
