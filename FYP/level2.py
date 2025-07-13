@@ -8,10 +8,10 @@ import json
 level2_bp = Blueprint('level2_bp', __name__, template_folder='templates')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PENDING_PATH = os.path.join('index', 'pending.json')
-THESAURUS_PATH = os.path.join('index', 'thesaurusnarrator.txt')
-INDEX_PATH = os.path.join('index', 'narratorindex.txt')
-HADITH_FOLDER = os.path.join('docs', 'ShahihBukhari')
+PENDING_PATH = os.path.join(BASE_DIR, 'index', 'pending.json')
+THESAURUS_PATH = os.path.join(BASE_DIR, 'index', 'thesaurusnarrator.txt')
+INDEX_PATH = os.path.join(BASE_DIR, 'index', 'narratorindex.txt')
+HADITH_FOLDER = os.path.join(BASE_DIR, 'docs', 'ShahihBukhari')
 index_data = load_index(INDEX_PATH)
 @level2_bp.route('/level2', methods=['GET', 'POST'])
 def level2():
