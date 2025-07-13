@@ -27,8 +27,8 @@
         <button class="login-button">Login</button>
     </a>
 
-    <div class="landing-container" style="display: flex; flex-direction: row; justify-content: flex-start; max-width: 1400px; margin: 0 auto; gap: 100px;">
-        <div class="main-content" style="flex: 0 1 600px; text-align: center;">
+    <div class="landing-container" style="display: flex; flex-direction: row; justify-content: space-between; max-width: 1400px; margin: 0 auto; gap: 50px;">
+        <div class="main-content" style="flex: 1; text-align: center; min-width: 0;">
             <h1>muradifRawi</h1>
             <p class="subtitle">RETRIEVE HADITHS BASED ON SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
 
@@ -103,9 +103,9 @@
         </div>
 
         <!-- Hadith Slider Box -->
-        <div id="hadith-slider" style="width: 450px; height: 500px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 24px; margin-left: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px;">
+        <div id="hadith-slider" style="width: 400px; height: 450px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px; flex-shrink: 0;">
             <h3 style="margin-top: 0; font-weight: bold; color: #000;">Hadith Of The Day</h3>
-            <div id="hadith-content" style="height: 450px; text-align: left; font-size: 1.3em; margin-bottom: 16px; color: #000; line-height: 1.4; overflow-y: auto; padding: 15px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
+            <div id="hadith-content" style="height: 400px; text-align: left; font-size: 1.2em; margin-bottom: 16px; color: #000; line-height: 1.4; overflow-y: auto; padding: 15px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
                 Loading...
             </div>
             <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>
