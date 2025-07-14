@@ -10,7 +10,6 @@ def preprocess_query(query):
     # Replace common variations that might cause mismatches
     variations = {
         'masud': "mas'ud",  # Common variation without apostrophe
-        'ibn': 'ibnu',       # Common prefix variation
         'bin': 'bin',        # Keep as is
     }
     

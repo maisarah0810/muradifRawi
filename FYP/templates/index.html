@@ -63,7 +63,7 @@
                         {% if documents %}
                             {% for doc in documents %}
                                 <div class="doc">
-                                    <h3>{{ loop.revindex }}. {{ doc.filename }}</h3>
+                                    <h3>{{ loop.index }}. {{ doc.filename }}</h3>
                                     <pre>{{ doc.content | safe }}</pre>
                                 </div>
                             {% endfor %}
