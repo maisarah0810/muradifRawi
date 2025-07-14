@@ -8,8 +8,8 @@ mailjet = Client(auth=(API_KEY, API_SECRET), version='v3.1')
 
 def send_password_email(to_email, password,fullname):
     # Get the base URL from environment variable or default to localhost
-    #base_url = os.getenv('BASE_URL', 'http://localhost:5000')
-    #reset_link = f"{base_url}/reset-password?email={to_email}"
+    base_url = os.getenv('BASE_URL', 'http://localhost:5000')
+    reset_link = f"{base_url}/reset-password?email={to_email}"
 
     data = {
         'Messages': [
@@ -30,6 +30,7 @@ def send_password_email(to_email, password,fullname):
                     <h3>Hello {fullname},</h3>
                     <p>Your account has been created. Please use the temporary password below to log in:</p>
                     <p><strong>{password}</strong></p>
+                    <p> Link to open muradifRawi : {base_url}</p>
                     <p>Recommended to change password</p>
                 
                 """
