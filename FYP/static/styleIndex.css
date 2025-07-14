@@ -153,19 +153,28 @@ button:hover {
     border-radius: 8px;
     margin-bottom: 20px;
     overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .doc h3 {
     margin-top: 0;
     color: #90ee90;
     font-size: 18px;
+    word-wrap: break-word;
 }
 
 .doc pre {
     white-space: pre-wrap;
     word-wrap: break-word;
+    overflow-wrap: break-word;
     color: #e0e0e0;
     font-size: 14px;
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
 }
 
 ul {
@@ -242,4 +251,22 @@ mark {
     cursor: pointer;
     font-weight: bold;
     font-size: 14px;
+}
+
+.flex-container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .doc pre {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+    .result-box {
+        padding: 15px;
+        margin: 10px;
+    }
 }
