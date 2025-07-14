@@ -13,6 +13,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_PATH = os.path.join(BASE_DIR, 'index', 'narratorindex.txt')
 THESAURUS_PATH = os.path.join(BASE_DIR, 'index', 'thesaurusnarrator.txt')
 PENDING_PATH = os.path.join(BASE_DIR, 'index', 'pending.json')
+PENDING_INDEX_PATH = os.path.join(BASE_DIR, 'index', 'pending_index.json')
 HADITH_FOLDER = os.path.join(BASE_DIR, 'docs', 'ShahihBukhari')
 
 # Load index and thesaurus once
@@ -40,6 +41,81 @@ def save_new_entry(base_name, synonym, index_value):
 
     with open(PENDING_PATH, 'w') as f:
         json.dump(entries, f, indent=2)
+
+def add_new_index(name, indexes):
+    """
+    Add new indexes to an existing or new name.
+    
+    Args:
+        name (str): The narrator name
+        indexes (list): List of integer index numbers
+    
+    Returns:
+        dict: Result information about what was added/updated
+    """
+    # Validate indexes are numeric
+    try:
+        index_list = [int(idx) for idx in indexes if str(idx).strip().isdigit()]
+    except ValueError:
+        raise ValueError("All indexes must be numeric values")
+    
+    if not index_list:
+        raise ValueError("At least one valid numeric index is required")
+    
+    # Remove duplicates and sort
+    index_list = sorted(set(index_list))
+    
+    # Check if name exists in index file (for information only)
+    name_exists = False
+    existing_indexes = []
+    
+    with open(INDEX_PATH, 'r') as f:
+        index_lines = f.readlines()
+    
+    for line in index_lines:
+        if ':' in line:
+            existing_name, existing_index_str = line.strip().split(':', 1)
+            if preprocess_query(existing_name) == preprocess_query(name):
+                name_exists = True
+                # Get existing indexes for information
+                existing_indexes = [int(i.strip()) for i in existing_index_str.split(',') if i.strip().isdigit()]
+                break
+    
+    # NOTE: We do NOT update the main index file immediately
+    # All changes will be applied only after approval
+    # This maintains consistency with the existing approval workflow
+    
+    # Save to pending_index.json for verification
+    pending_entry = {
+        "name": name,
+        "indexes": index_list,
+        "is_new_name": not name_exists,
+        "new_indexes_only": [idx for idx in index_list if idx not in existing_indexes] if name_exists else index_list,
+        "existing_indexes": existing_indexes
+    }
+    
+    if os.path.exists(PENDING_INDEX_PATH):
+        with open(PENDING_INDEX_PATH, 'r') as f:
+            pending_entries = json.load(f)
+    else:
+        pending_entries = []
+    
+    pending_entries.append(pending_entry)
+    
+    with open(PENDING_INDEX_PATH, 'w') as f:
+        json.dump(pending_entries, f, indent=2)
+    
+    # Return result information
+    new_indexes_only = [idx for idx in index_list if idx not in existing_indexes] if name_exists else index_list
+    
+    return {
+        'name_exists': name_exists,
+        'new_indexes': new_indexes_only,
+        'all_indexes': index_list,
+        'existing_indexes': existing_indexes,
+        'is_new_name': not name_exists,
+        'duplicate_indexes': [idx for idx in index_list if idx in existing_indexes] if name_exists else []
+    }
 
 def approve_entry(base_name, new_synonym, index_value):
     # Clean index values
@@ -157,3 +233,105 @@ def reject_entry(new_name):
 
         with open(PENDING_PATH, 'w') as f:
             json.dump(updated_entries, f, indent=2)
+
+def approve_index_entry(name, indexes):
+    """
+    Approve an index entry by removing it from pending_index.json
+    """
+    if os.path.exists(PENDING_INDEX_PATH):
+        with open(PENDING_INDEX_PATH, 'r') as f:
+            entries = json.load(f)
+
+        updated_entries = [
+            entry for entry in entries 
+            if not (preprocess_query(entry["name"]) == preprocess_query(name) and 
+                   set(entry["indexes"]) == set(indexes))
+        ]
+
+        with open(PENDING_INDEX_PATH, 'w') as f:
+            json.dump(updated_entries, f, indent=2)
+
+def approve_index_entry_with_thesaurus(name, indexes, is_new_name=False):
+    """
+    Approve an index entry and add new name to thesaurus if it's a new name
+    """
+    # First, remove from pending
+    approve_index_entry(name, indexes)
+    
+    # Apply changes to the main index file
+    with open(INDEX_PATH, 'r') as f:
+        index_lines = f.readlines()
+    
+    updated_index_lines = []
+    name_found = False
+    
+    for line in index_lines:
+        if ':' in line:
+            existing_name, existing_index_str = line.strip().split(':', 1)
+            if preprocess_query(existing_name) == preprocess_query(name):
+                name_found = True
+                # Get existing indexes and merge with new ones
+                existing_indexes = [int(i.strip()) for i in existing_index_str.split(',') if i.strip().isdigit()]
+                all_indexes = sorted(set(existing_indexes + indexes))
+                formatted_indexes = ", ".join(map(str, all_indexes))
+                updated_line = f"{existing_name}: {formatted_indexes}\n"
+                updated_index_lines.append(updated_line)
+            else:
+                updated_index_lines.append(line)
+        else:
+            updated_index_lines.append(line)
+    
+    # If name not found in index, add new entry
+    if not name_found:
+        formatted_indexes = ", ".join(map(str, indexes))
+        updated_index_lines.append(f"{name}: {formatted_indexes}\n")
+    
+    # Write updated index file
+    with open(INDEX_PATH, 'w') as f:
+        f.writelines(updated_index_lines)
+    
+    # If it's a new name, add it to thesaurus
+    if is_new_name:
+        with open(THESAURUS_PATH, 'r') as f:
+            thesaurus_lines = f.readlines()
+        
+        # Check if name already exists in thesaurus
+        name_in_thesaurus = False
+        for line in thesaurus_lines:
+            if ':' in line:
+                existing_base, synonyms_str = line.strip().split(':', 1)
+                if preprocess_query(existing_base) == preprocess_query(name):
+                    name_in_thesaurus = True
+                    break
+        
+        # If name not in thesaurus, add new entry
+        if not name_in_thesaurus:
+            thesaurus_lines.append(f"{name}:\n")
+            with open(THESAURUS_PATH, 'w') as f:
+                f.writelines(thesaurus_lines)
+
+def reject_index_entry(name, indexes):
+    """
+    Reject an index entry by removing it from pending_index.json
+    """
+    if os.path.exists(PENDING_INDEX_PATH):
+        with open(PENDING_INDEX_PATH, 'r') as f:
+            entries = json.load(f)
+
+        updated_entries = [
+            entry for entry in entries 
+            if not (preprocess_query(entry["name"]) == preprocess_query(name) and 
+                   set(entry["indexes"]) == set(indexes))
+        ]
+
+        with open(PENDING_INDEX_PATH, 'w') as f:
+            json.dump(updated_entries, f, indent=2)
+
+def load_pending_index_entries():
+    """
+    Load pending index entries from pending_index.json
+    """
+    if os.path.exists(PENDING_INDEX_PATH):
+        with open(PENDING_INDEX_PATH, 'r') as f:
+            return json.load(f)
+    return []

@@ -18,7 +18,7 @@
 </div>
 
 <h1>muradifRawi</h1>
-<p class="subtitle">RETRIEVE HADITS BASED ON THE SYNONYMS OF NARRATOR’S NAME USING BOOLEAN MODEL</p>
+<p class="subtitle">RETRIEVE HADITS BASED ON THE SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
 
 <div class="search-box">
     <form method="POST" action="/level1">
@@ -48,6 +48,20 @@
             <input type="text" name="index" required><br>
 
             <button type="submit">submit</button>
+        </form>
+
+        <hr style="margin: 20px 0; border: 1px solid #ccc;">
+
+        <h2>Add new index</h2>
+        <form method="POST" action="/level1">
+            <input type="hidden" name="form_type" value="add_index">
+            <label>Narrator Name:</label><br>
+            <input type="text" name="narrator_name" required><br>
+
+            <label>Index Number(s):</label><br>
+            <input type="text" name="index_numbers" placeholder="e.g., 123, 456, 789" required><br>
+
+            <button type="submit">Add New Index</button>
         </form>
     </div>
 

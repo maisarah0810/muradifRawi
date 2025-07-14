@@ -50,6 +50,20 @@
 
             <button type="submit">submit</button>
         </form>
+
+        <hr style="margin: 20px 0; border: 1px solid #ccc;">
+
+        <h2>Add new index</h2>
+        <form method="POST" action="/level2">
+            <input type="hidden" name="form_type" value="add_index">
+            <label>Narrator Name:</label><br>
+            <input type="text" name="narrator_name" required><br>
+
+            <label>Index Number(s):</label><br>
+            <input type="text" name="index_numbers" placeholder="e.g., 123, 456, 789" required><br>
+
+            <button type="submit">Add New Index</button>
+        </form>
     </div>
 
     <!-- Search Results (Center) -->
@@ -118,6 +132,39 @@
     {% else %}
         <p>No pending entries to verify.</p>
     {% endif %}
+
+        <hr style="margin: 20px 0; border: 1px solid #ccc;">
+
+        <h2>Pending index entries</h2>
+        {% if pending_index_entries %}
+        {% for entry in pending_index_entries %}
+            <div class="entry-box" style="font-size: 1.1em;">
+                <p><strong>Name:</strong> {{ entry['name'] }}</p>
+                <p><strong>Indexes:</strong> {{ entry['indexes'] }}</p>
+                <p><strong>New Indexes Only:</strong> {{ entry['new_indexes_only'] }}</p>
+                <p><strong>Is New Name:</strong> {{ 'Yes' if entry['is_new_name'] else 'No' }}</p>
+
+                <div style="display: flex; justify-content: space-between; gap: 1px; margin-top: 5px;">
+                    <form method="POST" action="{{ url_for('level2_bp.approve_index_entry_route') }}">
+                        <input type="hidden" name="name" value="{{ entry['name'] }}">
+                        <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
+                        <input type="hidden" name="is_new_name" value="{{ 'true' if entry['is_new_name'] else 'false' }}">
+                        <button type="submit" style="background-color: #41cb5a; width: 100px;">Approve</button>
+                    </form>
+
+                    <form method="POST" action="{{ url_for('level2_bp.reject_index_entry_route') }}">
+                        <input type="hidden" name="name" value="{{ entry['name'] }}">
+                        <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
+                        <button type="submit" style="background-color: #e53935; width: 100px;">Reject</button>
+                    </form>
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No pending index entries to verify.</p>
+    {% endif %}
+
         <a href="{{ url_for('download_thesaurus') }}">
             <button style="margin-top: 20px;">Download Thesaurus PDF</button>
         </a>

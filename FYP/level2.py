@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from helpers import get_synonyms,save_new_entry, approve_entry, reject_entry
+from helpers import get_synonyms, save_new_entry, approve_entry, reject_entry, add_new_index, approve_index_entry_with_thesaurus, reject_index_entry, load_pending_index_entries
 from boolean_retrieval import get_related_documents, load_index
 from preprocessing import preprocess_query
 import os
@@ -21,6 +21,9 @@ def level2():
     if os.path.exists(PENDING_PATH):
         with open(PENDING_PATH, 'r') as f:
             added_entries = json.load(f)
+
+    # Load pending index entries
+    pending_index_entries = load_pending_index_entries()
 
     name = None
     synonyms = []
@@ -47,9 +50,47 @@ def level2():
                 with open(PENDING_PATH, 'r') as f:
                     added_entries = json.load(f)
 
+        elif form_type == 'add_index':
+            try:
+                narrator_name = request.form['narrator_name']
+                index_input = request.form['index_numbers']
+                
+                # Parse comma-separated indexes
+                indexes = [idx.strip() for idx in index_input.split(',') if idx.strip()]
+                
+                if not indexes:
+                    flash("Please enter at least one index number.", "error")
+                    return redirect(url_for('level2_bp.level2'))
+                
+                # Call the add_new_index function
+                result = add_new_index(narrator_name, indexes)
+                
+                # Generate appropriate message based on result
+                if result['is_new_name']:
+                    flash("New name and index(es) created. You can add synonyms later. Sent for verification.", "success")
+                elif result['duplicate_indexes'] and result['new_indexes']:
+                    flash(f"Only index(es) {result['new_indexes']} added under existing name. The rest already exist.", "info")
+                elif result['duplicate_indexes'] and not result['new_indexes']:
+                    flash("All provided indexes already exist under this name.", "warning")
+                else:
+                    flash("New index(es) added under existing name. Sent for verification.", "success")
+                
+                # Reload pending index entries
+                pending_index_entries = load_pending_index_entries()
+                
+                return redirect(url_for('level2_bp.level2'))
+                
+            except ValueError as e:
+                flash(str(e), "error")
+                return redirect(url_for('level2_bp.level2'))
+            except Exception as e:
+                flash(f"An error occurred: {str(e)}", "error")
+                return redirect(url_for('level2_bp.level2'))
+
     return render_template(
         'level2.html',
         added_entries=added_entries,
+        pending_index_entries=pending_index_entries,
         name=name,
         synonyms=synonyms,
         documents=documents
@@ -85,3 +126,38 @@ def reject_entry_route():
     
     flash("Entry has been rejected.", "info")
     return redirect(url_for('level2_bp.level2'))
+
+@level2_bp.route('/level2/approve_index', methods=['POST'])
+def approve_index_entry_route():
+    try:
+        name = request.form['name']
+        indexes_str = request.form['indexes']
+        is_new_name = request.form.get('is_new_name', 'false').lower() == 'true'
+        
+        # Parse indexes from string
+        indexes = [int(idx.strip()) for idx in indexes_str.strip('[]').split(',') if idx.strip().isdigit()]
+        
+        approve_index_entry_with_thesaurus(name, indexes, is_new_name)
+        
+        flash("Index entry approved and removed from pending.", "success")
+        return redirect(url_for('level2_bp.level2'))
+    except Exception as e:
+        flash(f"Error processing request: {str(e)}", "error")
+        return redirect(url_for('level2_bp.level2'))
+
+@level2_bp.route('/level2/reject_index', methods=['POST'])
+def reject_index_entry_route():
+    try:
+        name = request.form['name']
+        indexes_str = request.form['indexes']
+        
+        # Parse indexes from string
+        indexes = [int(idx.strip()) for idx in indexes_str.strip('[]').split(',') if idx.strip().isdigit()]
+        
+        reject_index_entry(name, indexes)
+        
+        flash("Index entry rejected and removed from pending.", "info")
+        return redirect(url_for('level2_bp.level2'))
+    except Exception as e:
+        flash(f"Error processing request: {str(e)}", "error")
+        return redirect(url_for('level2_bp.level2'))
