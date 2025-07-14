@@ -119,6 +119,24 @@
             <p>No new entries submitted.</p>
         {% endif %}
 
+        <hr style="margin: 20px 0; border: 1px solid #ccc;">
+
+        <h2>Pending index entries</h2>
+        {% if pending_index_entries %}
+            <ul style="font-size: 1.1em;">
+                {% for entry in pending_index_entries %}
+                    <li>
+                        Name: {{ entry['name'] }}<br>
+                        Indexes: {{ entry['indexes'] }}<br>
+                        New Indexes Only: {{ entry['new_indexes_only'] }}<br>
+                        Is New Name: {{ 'Yes' if entry['is_new_name'] else 'No' }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No pending index entries.</p>
+        {% endif %}
+
         <button onclick="showNotQualifiedAlert()">Verify</button>
         <a href="{{ url_for('download_thesaurus') }}">
             <button style="margin-top: 20px;">Download Thesaurus PDF</button>

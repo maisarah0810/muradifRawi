@@ -26,6 +26,9 @@ def level1():
     else:
         added_entries = []
 
+    # Load pending index entries
+    pending_index_entries = load_pending_index_entries()
+
     if request.method == 'POST':
         form_type = request.form.get('form_type')
 
@@ -69,6 +72,9 @@ def level1():
                 else:
                     flash("New index(es) added under existing name. Sent for verification.", "success")
                 
+                # Reload pending index entries
+                pending_index_entries = load_pending_index_entries()
+                
                 return redirect(url_for('level1_bp.level1'))
                 
             except ValueError as e:
@@ -87,6 +93,7 @@ def level1():
     return render_template(
         'level1.html',
         added_entries=added_entries,
+        pending_index_entries=pending_index_entries,
         name=name,
         synonyms=synonyms,
         documents=hadiths
