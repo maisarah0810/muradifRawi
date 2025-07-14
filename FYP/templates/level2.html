@@ -90,7 +90,7 @@
             {% if documents %}
                                     {% for doc in documents %}
                         <div class="doc" style="font-size: 1.2em; color: #000; margin-bottom: 24px;">
-                            <h4 style="color: #000;">{{ doc.filename }}</h4>
+                            <h4 style="color: #000;">{{ loop.index }}. {{ doc.filename }}</h4>
                             <pre style="font-size: 1.1em; color: #000; text-align: justify;">{{ doc.content | safe }}</pre>
                         </div>
                     {% endfor %}
