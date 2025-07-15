@@ -32,13 +32,13 @@
             <h1>muradifRawi</h1>
             <p class="subtitle">RETRIEVE HADITHS BASED ON SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
 
-            <form method="POST" action="/" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <form method="POST" action="/" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                 <input type="hidden" name="form_type" value="search">
                 {% for entry in added_entries %}
                     <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
                 {% endfor %}
-                <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required style="width: 300px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-                <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+                <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required style="width: 260px; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+                <button type="submit" style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
             </form>
 
             {% if name and synonyms %}
@@ -62,9 +62,9 @@
                         <h3>Related Hadith Documents</h3>
                         {% if documents %}
                             {% for doc in documents %}
-                                <div class="doc">
-                                    <h3>{{ loop.index }}. {{ doc.filename }}</h3>
-                                    <pre>{{ doc.content | safe }}</pre>
+                                <div class="doc" style="font-size: 1.1em; color: #000; margin-bottom: 20px;">
+                                    <h4 style="color: #000; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ loop.index }}. {{ doc.filename }}</h4>
+                                    <pre style="font-size: 1em; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -74,18 +74,18 @@
                 </div>
             {% endif %}
 
-            <div class="add-name-box" style="text-align: center; margin-top: 30px;">
+            <div class="add-name-box" style="text-align: center; margin-top: 25px;">
                 <h2>Want to add synonym names?</h2>
 
                 {% if added_entries %}
-                    <div style="margin: 20px 0;">
+                    <div style="margin: 15px 0;">
                         {% for entry in added_entries %}
-                            <div style="background: #f9f9f9; border-radius: 8px; padding: 15px; margin-bottom: 15px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1.1em;">
-                                <div style="margin-bottom: 8px;">
+                            <div style="background: #f9f9f9; border-radius: 8px; padding: 12px; margin-bottom: 12px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1em;">
+                                <div style="margin-bottom: 6px;">
                                     <strong style="color: #333;">Name:</strong> 
                                     <span style="color: #666;">{{ entry['base_name'] }}</span>
                                 </div>
-                                <div style="margin-bottom: 8px;">
+                                <div style="margin-bottom: 6px;">
                                     <strong style="color: #333;">Synonym:</strong> 
                                     <span style="color: #666;">{{ entry['synonym'] }}</span>
                                 </div>
@@ -98,14 +98,14 @@
                     </div>
                 {% endif %}
 
-                <button onclick="showNotQualifiedAlert()" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Add name</button>
+                <button onclick="showNotQualifiedAlert()" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Add name</button>
             </div>
         </div>
 
         <!-- Hadith Slider Box -->
-        <div id="hadith-slider" style="width: 400px; height: 450px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px; flex-shrink: 0;">
+        <div id="hadith-slider" style="width: 350px; height: 400px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px; flex-shrink: 0;">
             <h3 style="margin-top: 0; font-weight: bold; color: #000;">Hadith Of The Day</h3>
-            <div id="hadith-content" style="height: 400px; text-align: left; font-size: 1.2em; margin-bottom: 16px; color: #000; line-height: 1.4; overflow-y: auto; padding: 15px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
+            <div id="hadith-content" style="height: 350px; text-align: left; font-size: 1.1em; margin-bottom: 12px; color: #000; line-height: 1.4; overflow-y: auto; padding: 12px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
                 Loading...
             </div>
             <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>

@@ -30,41 +30,41 @@ body {
 }
 
 h1, h2 {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     color: black;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     text-align: center;
 }
 
 .subtitle {
-    font-size: 16px;
-    margin-bottom: 25px;
+    font-size: 14px;
+    margin-bottom: 20px;
     color: black;
 }
 
 .search-box {
-    margin: 25px auto;
+    margin: 20px auto;
     width: 40%;
-    max-width: 400px;
+    max-width: 350px;
 }
 
 .search-box input[type="text"] {
-    padding: 10px;
-    width: 250px;
+    padding: 8px;
+    width: 220px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     background-color: white;
     color: black;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .search-box button {
-    margin-top: 10px;
-    padding: 10px 25px;
-    font-size: 16px;
+    margin-top: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
     border: none;
     border-radius: 20px;
     background-color: black;
@@ -91,33 +91,33 @@ h1, h2 {
 .flex-container {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 20px;
     flex-wrap: wrap;
-    margin-top: 30px;
+    margin-top: 25px;
     align-items: flex-start;
-    max-width: 1400px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 20px;
+    padding: 0 15px;
 }
 
 .flex-box {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 250px;
-    min-height: 100px;
+    width: 220px;
+    min-height: 80px;
 }
 
 .result-box {
     background-color: rgba(0, 0, 0, 0.372);
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
-    max-width: 600px;
-    width: 500px;
+    max-width: 500px;
+    width: 450px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     flex-grow: 1;
     overflow: hidden;
@@ -125,20 +125,21 @@ h1, h2 {
 
 /* Fix for hadith content overflow */
 .doc {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
 .doc h4 {
     color: #000;
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    font-size: 1.1em;
+    margin-bottom: 8px;
     word-wrap: break-word;
+    font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
 
 .doc pre {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #000;
     text-align: justify;
     white-space: pre-wrap;
@@ -147,19 +148,21 @@ h1, h2 {
     max-width: 100%;
     overflow-x: auto;
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
-    margin: 10px 0;
+    margin: 8px 0;
+    font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
 
 .section {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .section h3 {
     color: #000;
-    margin-bottom: 10px;
-    font-size: 1.3em;
+    margin-bottom: 8px;
+    font-size: 1.2em;
+    font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
 
 .section ul {
