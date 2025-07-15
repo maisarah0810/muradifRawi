@@ -88,9 +88,9 @@
             <h3>Related Hadith Documents</h3>
             {% if documents %}
                     {% for doc in documents %}
-                    <div class="doc" style="font-size: 1.2em; color: #000; margin-bottom: 24px;">
-                        <h4 style="color: #000;">{{ loop.index }}. {{ doc.filename }}</h4>
-                        <pre style="font-size: 1.1em; color: #000; text-align: justify;">{{ doc.content | safe }}</pre>
+                    <div class="doc" style="font-size: 14px; color: #000; margin-bottom: 15px;">
+                        <h4 style="color: #000; font-size: 14px; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ loop.index }}. {{ doc.filename }}</h4>
+                        <pre style="font-size: 12px; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
                     </div>
                     {% endfor %}
             {% else %}
