@@ -62,9 +62,9 @@
                         <h3>Related Hadith Documents</h3>
                         {% if documents %}
                             {% for doc in documents %}
-                                <div class="doc" style="font-size: 1.1em; color: #000; margin-bottom: 20px;">
+                                <div class="doc" style="font-size: 1em; color: #000; margin-bottom: 20px;">
                                     <h4 style="color: #000; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ loop.index }}. {{ doc.filename }}</h4>
-                                    <pre style="font-size: 1em; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
+                                    <pre style="font-size: 0.9em; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -105,7 +105,7 @@
         <!-- Hadith Slider Box -->
         <div id="hadith-slider" style="width: 350px; height: 400px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px; flex-shrink: 0;">
             <h3 style="margin-top: 0; font-weight: bold; color: #000;">Hadith Of The Day</h3>
-            <div id="hadith-content" style="height: 350px; text-align: left; font-size: 1.1em; margin-bottom: 12px; color: #000; line-height: 1.4; overflow-y: auto; padding: 12px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
+            <div id="hadith-content" style="height: 350px; text-align: left; font-size: 1em; margin-bottom: 12px; color: #000; line-height: 1.4; overflow-y: auto; padding: 12px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
                 Loading...
             </div>
             <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>

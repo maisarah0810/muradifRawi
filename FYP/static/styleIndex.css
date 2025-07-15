@@ -159,7 +159,7 @@ button:hover {
 .doc h3 {
     margin-top: 0;
     color: #90ee90;
-    font-size: 16px;
+    font-size: 14px;
     word-wrap: break-word;
     font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
@@ -169,7 +169,7 @@ button:hover {
     word-wrap: break-word;
     overflow-wrap: break-word;
     color: #e0e0e0;
-    font-size: 13px;
+    font-size: 12px;
     max-width: 100%;
     overflow-x: auto;
     background-color: rgba(255, 255, 255, 0.8);

@@ -132,14 +132,14 @@ h1, h2 {
 
 .doc h4 {
     color: #000;
-    font-size: 1.1em;
+    font-size: 1em;
     margin-bottom: 8px;
     word-wrap: break-word;
     font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
 
 .doc pre {
-    font-size: 1em;
+    font-size: 0.9em;
     color: #000;
     text-align: justify;
     white-space: pre-wrap;
@@ -161,7 +161,7 @@ h1, h2 {
 .section h3 {
     color: #000;
     margin-bottom: 8px;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-family: 'California FB', 'Segoe UI', Arial, sans-serif;
 }
 
