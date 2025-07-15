@@ -495,3 +495,133 @@ input[type="submit"], button {
     margin-top: 10px;
     text-align: left;
 } 
+
+/* --- User Side Panel Styles for Admin Page --- */
+.side-panel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    z-index: 1000;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+    padding-top: 60px;
+    color: #222;
+}
+
+.side-panel h2 {
+    margin-top: 0;
+    padding-left: 24px;
+    color: #333;
+}
+
+#userList {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.user-item {
+    background: #f7f7f7;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-info {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.user-actions-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.update-btn, .delete-btn, .cancel-btn {
+    padding: 3px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    margin-left: 0;
+    min-width: 60px;
+}
+
+.update-btn { background: #4CAF50; color: #fff; }
+.delete-btn { background: #e53935; color: #fff; }
+.cancel-btn { background: #aaa; color: #fff; }
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+    z-index: 1100;
+}
+.close-btn:hover { color: #e53935; }
+
+.user-list-btn {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    padding: 20px 12px;
+    font-size: 1em;
+    cursor: pointer;
+    z-index: 1101;
+    box-shadow: -2px 2px 8px rgba(0,0,0,0.08);
+    transition: right 0.5s, background 0.2s;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    white-space: nowrap;
+}
+.user-list-btn:hover {
+    background: #444;
+}
+.user-list-btn.shifted {
+    right: 400px;
+}
+
+.user-actions-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+#userList {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+@media (max-width: 600px) {
+    .side-panel {
+        width: 100% !important;
+        padding-top: 40px;
+    }
+    .user-list-btn.shifted {
+        right: 100%;
+    }
+} 
