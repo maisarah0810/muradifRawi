@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>muradifRawi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bugaki font (Google Fonts or CDN) -->
+    <link href="https://fonts.cdnfonts.com/css/bugaki" rel="stylesheet">
+    <!-- Canva Sans font (self-hosted or fallback to Open Sans) -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Boxicons for icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styleIndex.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -23,28 +28,37 @@
           {% endif %}
         {% endwith %}
 
+    <header>
+        <span class="muradif-title">muradifRawi</span>
         <a href="{{ url_for('login_route') }}">
-        <button class="login-button">Login</button>
-    </a>
-
-    <div class="landing-container" style="display: flex; flex-direction: row; justify-content: space-between; max-width: 1400px; margin: 0 auto; gap: 50px;">
-        <div class="main-content" style="flex: 1; text-align: center; min-width: 0;">
-            <h1>muradifRawi</h1>
-            <p class="subtitle">RETRIEVE HADITHS BASED ON SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
-
-            <form method="POST" action="/" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <button class="login-button"><i class='bx bx-user'></i> Login</button>
+        </a>
+    </header>
+    <main>
+        <div class="intro-section">
+            <div class="discover-knowledge">
+                <i class='bx bxs-star'></i>
+                Discover Knowledge
+                <i class='bx bxs-star'></i>
+            </div>
+            <div class="subtitle">
+                Retrieve Hadiths Based on the Synonyms of Narrator’s Name Using Boolean Model
+            </div>
+            <form method="POST" action="/" class="search-bar-container">
                 <input type="hidden" name="form_type" value="search">
                 {% for entry in added_entries %}
                     <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
                 {% endfor %}
-                <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required style="width: 260px; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
-                <button type="submit" style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+                <i class='bx bx-search'></i>
+                <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required>
+                <button type="submit">Search</button>
             </form>
-
+        </div>
+        <div class="main-flex">
             {% if name and synonyms %}
-                <div class="results">
+            <div class="center-section">
+                <div class="result-box">
                     <h2>Results for: {{ name }}</h2>
-
                     <div class="section">
                         <h3>Synonyms</h3>
                         {% if synonyms %}
@@ -57,14 +71,13 @@
                             <p>No synonyms found.</p>
                         {% endif %}
                     </div>
-
                     <div class="section">
                         <h3>Related Hadith Documents</h3>
                         {% if documents %}
                             {% for doc in documents %}
-                                <div class="doc" style="font-size: 1em; color: #000; margin-bottom: 20px;">
-                                    <h4 style="color: #000; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ loop.index }}. {{ doc.filename }}</h4>
-                                    <pre style="font-size: 0.9em; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
+                                <div class="doc">
+                                    <h4>{{ loop.index }}. {{ doc.filename }}</h4>
+                                    <div class="doc-text">{{ doc.content | safe }}</div>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -72,50 +85,42 @@
                         {% endif %}
                     </div>
                 </div>
+            </div>
             {% endif %}
-
-            <div class="add-name-box" style="text-align: center; margin-top: 25px;">
-                <h2>Want to add new synonym names or new index?</h2>
-
-                {% if added_entries %}
-                    <div style="margin: 15px 0;">
-                        {% for entry in added_entries %}
-                            <div style="background: #f9f9f9; border-radius: 8px; padding: 12px; margin-bottom: 12px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 1em;">
-                                <div style="margin-bottom: 6px;">
-                                    <strong style="color: #333;">Name:</strong> 
-                                    <span style="color: #666;">{{ entry['base_name'] }}</span>
-                                </div>
-                                <div style="margin-bottom: 6px;">
-                                    <strong style="color: #333;">Synonym:</strong> 
-                                    <span style="color: #666;">{{ entry['synonym'] }}</span>
-                                </div>
-                                <div>
-                                    <strong style="color: #333;">Index:</strong> 
-                                    <span style="color: #666;">{{ entry['index_value'] }}</span>
-                                </div>
-                            </div>
-                        {% endfor %}
+            
+            <div class="right-side-column">
+                <div class="hadith-flex">
+                    <div id="hadith-slider">
+                        <div class="hadith-header"><i class='bx bx-bulb'></i> Hadith of the Day</div>
+                        <div id="hadith-content">Loading...</div>
+                        <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>
+                        <div class="slider-controls">
+                            <button onclick="prevHadith()"><i class='bx bx-left-arrow-alt'></i></button>
+                            <button onclick="nextHadith()"><i class='bx bx-right-arrow-alt'></i></button>
+                        </div>
                     </div>
-                {% endif %}
-
-                <button onclick="showNotQualifiedAlert()" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Add name</button>
+                </div>
+                
+                <div class="add-name-flex">
+                    <div class="add-name-box">
+                        <div class="add-name-header"><i class='bx bx-book'></i> Want to add new name or new index?</div>
+                        <div class="add-name-entries">
+                            {% if added_entries %}
+                                {% for entry in added_entries %}
+                                    <div class="add-name-entry">
+                                        <div><strong>Name:</strong> {{ entry['base_name'] }}</div>
+                                        <div><strong>Synonym:</strong> {{ entry['synonym'] }}</div>
+                                        <div><strong>Index:</strong> {{ entry['index_value'] }}</div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <button onclick="showNotQualifiedAlert()">Add name</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Hadith Slider Box -->
-        <div id="hadith-slider" style="width: 350px; height: 400px; background: #f4f4f4; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: sticky; top: 20px; flex-shrink: 0;">
-            <h3 style="margin-top: 0; font-weight: bold; color: #000;">Hadith Of The Day</h3>
-            <div id="hadith-content" style="height: 350px; text-align: left; font-size: 1em; margin-bottom: 12px; color: #000; line-height: 1.4; overflow-y: auto; padding: 12px; background: white; border-radius: 5px; border: 1px solid #ddd; word-wrap: break-word;">
-                Loading...
-            </div>
-            <script type="application/json" id="hadith-data">{{ random_hadiths|tojson|safe }}</script>
-            <div style="display: flex; gap: 16px;">
-                <button onclick="prevHadith()" style="font-size: 1.5em; background: none; border: none; cursor: pointer; color: #000;">&#8592;</button>
-                <button onclick="nextHadith()" style="font-size: 1.5em; background: none; border: none; cursor: pointer; color: #000;">&#8594;</button>
-            </div>
-        </div>
-    </div>
-
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Hadiths loaded from Flask backend
@@ -192,6 +197,18 @@ document.addEventListener('DOMContentLoaded', function() {
         hadithSlider.addEventListener('mouseenter', stopAutoSlide);
         hadithSlider.addEventListener('mouseleave', startAutoSlide);
     }
+    
+    // Add search-active class when search form is submitted
+    const searchForm = document.querySelector('.search-bar-container');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function() {
+            const mainFlex = document.querySelector('.main-flex');
+            if (mainFlex) {
+                mainFlex.classList.add('search-active');
+            }
+        });
+    }
+    
 });
 
   function showNotQualifiedAlert() {
@@ -210,5 +227,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 </script>
+
+{% if name and synonyms %}
+<script>
+// Add search-active class when there are search results
+document.addEventListener('DOMContentLoaded', function() {
+    const mainFlex = document.querySelector('.main-flex');
+    if (mainFlex) {
+        mainFlex.classList.add('search-active');
+    }
+});
+</script>
+{% endif %}
 </body>
 </html>
