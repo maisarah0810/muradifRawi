@@ -252,16 +252,11 @@ def approve_index_entry(name, indexes):
             json.dump(updated_entries, f, indent=2)
 
 def approve_index_entry_with_thesaurus(name, indexes, is_new_name=False):
-    """
-    Approve an index entry and add new name to thesaurus if it's a new name
-    """
     # First, remove from pending
     approve_index_entry(name, indexes)
-    
     # Apply changes to the main index file
     with open(INDEX_PATH, 'r') as f:
         index_lines = f.readlines()
-    
     updated_index_lines = []
     name_found = False
     

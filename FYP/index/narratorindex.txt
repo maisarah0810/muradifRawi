@@ -1,7 +1,6 @@
 abdulaziz: 105, 665, 640, 809, 429
 abdulazizbinshuhaib: 895
-abdulazizbinabuhazim: 422, 466
-abdullah: 156, 509, 645, 198, 214, 230, 239, 264, 272, 335, 514, 516, 531, 694, 5, 63, 86, 844, 852, 854, 859, 863, 865, 974, 975, 794, 795, 68, 122, 152, 233, 386, 389, 490, 496, 952, 31, 805, 788, 791, 661, 332, 46
+abdullah: 156, 509, 645, 198, 214, 230, 239, 264, 272, 335, 514, 516, 531, 694, 5, 63, 86, 844, 852, 854, 859, 863, 865, 974, 794, 795, 68, 122, 152, 233, 386, 389, 490, 496, 952, 31, 805, 788, 791, 46
 abdullahbinalmubarak: 975
 ibnualmubarak: 379, 858
 ibnumas'ud: 733, 964
@@ -14,13 +13,13 @@ albara: 649, 705, 725, 727, 750, 759, 777, 898, 915, 923
 albarrobinazib: 39
 washil: 376, 766
 washilalahdab: 29
-amrah: 316, 317, 436, 822, 852
+amrah: 316, 436, 822, 852
 amrahbintiabdurrahman: 317, 991, 996
 abdurrahmanbinalqasim: 297, 322, 784, 984
 abdurrahmanbinabdullahalqasim: 294
 abuannadlr: 483, 195, 446, 689
 abuannadlrmantanbudakumarbinubaidullah: 369, 271
-Abuannadlarmantanbudakumarbinabdullah: 344
+abuannadlarmantanbudakumarbinabdullah: 344
 abuannu'man: 237, 262, 292, 453, 510, 56, 670, 448, 554, 567, 716, 724, 744, 776, 878, 940
 abuannu'manarimbinalfadlal: 58
 abuattayyah: 410, 411, 652, 655, 67
@@ -38,7 +37,7 @@ abumurrahmantanbudakuqailbinabuthalib: 454, 64
 abumurrahmantanbudakummuhanibintiabuthalib: 271, 344
 abumusa: 77, 120, 189, 332, 334, 614, 540, 10, 999
 bapaknyaabuburdah: 237, 433, 95
-abunu'aim: 121, 152, 194, 197, 198, 245, 246, 248, 282, 294, 301, 347, 288, 513, 277, 555, 562, 584, 605, 599, 602, 833, 842, 824, 788, 862, 917, 923, 950, 966, 968, 992, 50, 199, 717, 737
+abunu'aim: 121, 152, 194, 197, 198, 245, 246, 248, 282, 294, 301, 347, 513, 277, 555, 562, 584, 605, 599, 602, 833, 842, 824, 788, 862, 917, 923, 950, 966, 968, 992, 50, 199, 717, 737
 abunu'aimalfadllbindukain: 288
 abuannu'aim: 523
 zainabputeriummusalamah: 127
@@ -49,7 +48,7 @@ bisyir: 65
 hammad: 102, 192, 193, 254, 307, 581, 510, 744, 773
 hammadbinzaid: 670
 syihab: 155
-azzuhry: 266, 213
+azzuhry: 266
 ibnusyihab: 356, 485, 201, 204, 216
 ibnuwahb: 451, 87, 297, 897, 984, 641, 657, 431, 808
 ibnuwahab: 69
@@ -68,3 +67,6 @@ isma'il: 162, 315, 732, 850, 756, 901
 isma'ilbinibrahim: 658
 masruq: 163, 350, 375, 408, 481, 484, 439, 33, 709, 752, 775
 masyruq: 952, 964
+azzuhri: 213
+abuqalabah: 570 
+abuqilabah: 15, 206, 226, 520, 559, 568, 571, 572, 592, 594, 595, 618, 636, 644, 695, 756, 760, 776, 780, 781, 949  

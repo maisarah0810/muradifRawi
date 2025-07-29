@@ -41,8 +41,8 @@ def level2():
             name = request.form['base_name']
             synonym = request.form['new_synonym']
             index = request.form['index']
+            #call function save_new_entry for add new name
             save_new_entry(name, synonym, index)
-
             flash("New synonym added and pending approval.", "success")
 
             # Reload entries after adding new
@@ -54,14 +54,11 @@ def level2():
             try:
                 narrator_name = request.form['narrator_name']
                 index_input = request.form['index_numbers']
-                
                 # Parse comma-separated indexes
-                indexes = [idx.strip() for idx in index_input.split(',') if idx.strip()]
-                
+                indexes = [idx.strip() for idx in index_input.split(',') if idx.strip()]  
                 if not indexes:
                     flash("Please enter at least one index number.", "error")
                     return redirect(url_for('level2_bp.level2'))
-                
                 # Call the add_new_index function
                 result = add_new_index(narrator_name, indexes)
                 
@@ -127,6 +124,10 @@ def reject_entry_route():
     flash("Entry has been rejected.", "info")
     return redirect(url_for('level2_bp.level2'))
 
+
+
+
+
 @level2_bp.route('/level2/approve_index', methods=['POST'])
 def approve_index_entry_route():
     try:
@@ -144,6 +145,9 @@ def approve_index_entry_route():
     except Exception as e:
         flash(f"Error processing request: {str(e)}", "error")
         return redirect(url_for('level2_bp.level2'))
+
+
+        
 
 @level2_bp.route('/level2/reject_index', methods=['POST'])
 def reject_index_entry_route():

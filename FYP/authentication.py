@@ -3,13 +3,18 @@ import os
 from werkzeug.security import check_password_hash
 from pymysql.cursors import DictCursor
 
+
+
 def get_db_connection():
     try:
         # Use environment variables for Railway deployment
         host = os.getenv('DB_HOST', 'localhost')
         user = os.getenv('DB_USER', 'root')
-        password = os.getenv('DB_PASSWORD', 'Ma@461398')
+        password = os.getenv('DB_PASSWORD', 'Ma@461398') 
         database = os.getenv('DB_NAME', 'fyp')
+        
+        if password is None:
+            raise ValueError("Database password not set. Please set the DB_PASSWORD environment variable.")
         
         conn = pymysql.connect(
             host=host,
@@ -19,9 +24,11 @@ def get_db_connection():
             cursorclass=DictCursor  # For dictionary cursor
         )
         return conn
-    except pymysql.MySQLError as err:
+    except Exception as err:
         print(f"Error while connecting to database: {err}")
         return None
+
+        
 
 def check_credentials(email, password):
     conn = get_db_connection()
