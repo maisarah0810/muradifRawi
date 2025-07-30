@@ -75,7 +75,7 @@ def admin():
                     if user:
                         cursor.execute("DELETE FROM user WHERE id = %s", (user_id,))
                         conn.commit()
-                        message = f"User '{user['fullname']}' deleted successfully."
+                        message = f"User have been deleted successfully."
                         message_category = "success"
                     else:
                         message = "User not found."
@@ -102,10 +102,5 @@ def admin():
         users = []
     finally:
         conn.close()
-
-    # Debug: Print the users list
-    print(f"Debug: Number of users found: {len(users)}")
-    for user in users:
-        print(f"Debug: User - {user}")
 
     return render_template('admin.html', users=users, message=message, category=message_category)

@@ -1,6 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/bugaki');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
 body {
     margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-image: url('../static/bg1.jfif');
     background-size: cover;
     background-position: center;
@@ -88,18 +91,7 @@ h1, h2 {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.flex-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 25px;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 15px;
-}
+
 
 .flex-box {
     background-color: #f0f0f0;
@@ -112,16 +104,7 @@ h1, h2 {
     min-height: 80px;
 }
 
-.result-box {
-    background-color: rgba(0, 0, 0, 0.372);
-    padding: 20px;
-    border-radius: 12px;
-    max-width: 500px;
-    width: 450px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    flex-grow: 1;
-    overflow: hidden;
-}
+
 
 /* Fix for hadith content overflow */
 .doc {
@@ -176,40 +159,9 @@ h1, h2 {
     color: #000;
 }
 
-@media (max-width: 1200px) {
-    .flex-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .result-box {
-        order: 3;
-        width: 100%;
-        max-width: 800px;
-    }
-    .flex-box {
-        width: 100%;
-        max-width: 400px;
-    }
-}
 
-@media (max-width: 768px) {
-    .search-box {
-        width: 90%;
-    }
-    .search-box input[type="text"] {
-        width: 100%;
-    }
-    .flex-container {
-        padding: 0 10px;
-    }
-    .result-box {
-        padding: 15px;
-    }
-    .doc pre {
-        font-size: 1em;
-        padding: 10px;
-    }
-}
+
+
 
 .left-box, .right-box {
     background-color: #f0f0f0;
@@ -228,15 +180,7 @@ h1, h2 {
     gap: 20px;
 }
 
-.box {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 250px;
-}
+
 
 .box input[type="text"] {
     width: 90%;
@@ -270,358 +214,504 @@ ul {
 
 /* Entry box styling for pending entries */
 .entry-box {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    text-align: left;
+    background: #ffeded;
+    border-left: 6px solid #db2e75;
+    border-radius: 0.8em;
+    padding: 0.5em 0.8em;
+    box-shadow: 0 2px 8px rgba(219,46,117,0.06);
+    margin-bottom: 0.4em;
+    border: none;
 }
 
 .entry-box p {
-    margin: 5px 0;
+    margin: 3px 0;
+    font-size: 0.9em;
 }
 
 .entry-box strong {
+    color: #065f46;
+}
+
+
+
+/* Level 1 and Level 2 Styles */
+@import url('https://fonts.cdnfonts.com/css/bugaki');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+/* Level 1 and Level 2 specific body styles */
+body.level1, body.level2 {
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #fbe5e5 0%, #e5f5e1 100%);
+    color: #222;
+    min-height: 100vh;
+}
+
+body.level1 html, body.level1 body, body.level2 html, body.level2 body {
+    overflow-x: hidden;
+}
+
+/* Header styles for level1 and level2 */
+body.level1 header, body.level2 header {
+    background: #ffeded;
+    width: 100%;
+    min-height: 70px;
+    position: relative;
+    z-index: 2;
+    text-align: left !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+body.level1 .muradif-title, body.level2 .muradif-title {
+    font-family: 'Bugaki', serif !important;
+    font-size: 2.2rem !important;
+    color: #000 !important;
+    margin-left: 24px !important;
+    letter-spacing: 1px !important;
+    text-align: left !important;
+    font-weight: normal !important;
+    display: inline-block !important;
+}
+
+/* Logout button styling for level1 and level2 */
+body.level1 .logout-btn, body.level2 .logout-btn {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    background: linear-gradient(90deg, #ff77b7 0%, #7c9f80 100%);
+    color: #fff;
+    border: none;
+    border-radius: 1.5em;
+    padding: 0.6em 1.5em;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(154,62,105,0.10);
+}
+
+body.level1 .logout-btn:hover, body.level2 .logout-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(154,62,105,0.18);
+    color: white;
+    text-decoration: none;
+}
+
+/* Intro section for level1 and level2 */
+body.level1 .intro-section, body.level2 .intro-section {
+    text-align: center;
+    margin-top: 2em;
+}
+
+body.level1 .discover-knowledge, body.level2 .discover-knowledge {
+    font-family: 'Open Sans', 'Canva Sans', Arial, sans-serif;
+    font-size: 2.8rem;
+    color: #9a3e69;
+    font-weight: bold;
+    margin: 0.5em 0 0.2em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+body.level1 .discover-knowledge .bxs-star, body.level2 .discover-knowledge .bxs-star {
+    font-size: 2.2rem;
+    color: #ff77b7;
+}
+
+body.level1 .discover-knowledge .bx, body.level2 .discover-knowledge .bx {
+    font-size: 2.2rem;
+    color: #ff77b7;
+}
+
+body.level1 .subtitle, body.level2 .subtitle {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 2em;
+}
+
+/* Search bar container for level1 and level2 */
+body.level1 .search-bar-container, body.level2 .search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2em auto;
+    max-width: 700px;
+    background: #fff;
+    border-radius: 2em;
+    box-shadow: 0 4px 24px 0 rgba(154,62,105,0.10);
+    padding: 0.5em 1.5em;
+    position: relative;
+}
+
+body.level1 .search-bar-container input[type="text"], body.level2 .search-bar-container input[type="text"] {
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    flex: 1;
+    background: transparent;
+    padding: 0.7em 0.5em;
+    color: #222;
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+body.level1 .search-bar-container .bx-search, body.level2 .search-bar-container .bx-search {
+    font-size: 1.6em;
+    color: #9a3e69;
+    margin-right: 0.5em;
+}
+
+body.level1 .search-bar-container button, body.level2 .search-bar-container button {
+    background: linear-gradient(90deg, #ff77b7 0%, #7c9f80 100%);
+    color: #fff;
+    border: none;
+    border-radius: 1.5em;
+    padding: 0.6em 1.5em;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-left: 1em;
+    box-shadow: 0 2px 8px rgba(154,62,105,0.10);
+}
+
+body.level1 .search-bar-container button:hover, body.level2 .search-bar-container button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(154,62,105,0.18);
+}
+
+/* Action icons for level1 and level2 */
+body.level1 .action-icons, body.level2 .action-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 0 auto 1rem auto;
+    padding: 0 2rem;
+    max-width: 800px;
+}
+
+body.level1 .action-icon, body.level2 .action-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    min-width: 80px;
+}
+
+body.level1 .action-icon:hover, body.level2 .action-icon:hover {
+    transform: translateY(-5px);
+}
+
+body.level1 .action-icon i, body.level2 .action-icon i {
+    font-size: 2.5em;
+    color: #065f46;
+    background: white;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.level1 .action-icon:hover i, body.level2 .action-icon:hover i {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: scale(1.05);
+}
+
+body.level1 .action-icon span, body.level2 .action-icon span {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* Center existing content boxes for level1 and level2 */
+body.level1 .flex-box, body.level2 .flex-box {
+    margin: 0 auto;
+    display: block;
+}
+
+body.level1 .box, body.level2 .box {
+    background: #fff;
+    border-radius: 1.5em;
+    box-shadow: 0 2px 16px 0 rgba(219,46,117,0.08);
+    padding: 1.5em 0.5em 1.2em 0.5em;
+    margin: 0 auto 0.5rem auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 300px;
+    height: 600px;
+    overflow: hidden;
+    gap: 1em;
+}
+
+body.level1 .flex-container.search-active .box, body.level2 .flex-container.search-active .box {
+    margin: 2em 0 0 0;
+    order: 2;
+}
+
+body.level1 .box h2, body.level2 .box h2 {
+    margin: 0;
+    color: #065f46;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+body.level1 .box h2::before, body.level2 .box h2::before {
+    content: "✏️";
+    font-size: 1.2em;
+}
+
+body.level1 .pending-entries, body.level2 .pending-entries {
+    flex: 1 1 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    min-height: 0;
+}
+
+body.level1 .flex-container, body.level2 .flex-container {
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
+
+body.level1 .flex-container.search-active, body.level2 .flex-container.search-active {
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0 1rem;
+}
+
+/* Result box styles for level1 and level2 */
+body.level1 .result-box, body.level2 .result-box {
+    background: #fff;
+    border-radius: 1.5em;
+    box-shadow: 0 2px 16px 0 rgba(219,46,117,0.08);
+    padding: 1.5em 1.2em 1.2em 1.2em;
+    margin-top: 2em;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    min-height: 400px;
+    overflow: visible;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.level1 .flex-container.search-active .result-box, body.level2 .flex-container.search-active .result-box {
+    margin-left: 0;
+    margin-right: auto;
+    order: 1;
+}
+
+body.level1 .result-box h2, body.level2 .result-box h2 {
+    color: #065f46;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0 0 1em 0;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.level1 .result-box .section, body.level2 .result-box .section {
+    margin-bottom: 1.5em;
+}
+
+body.level1 .result-box .section h3, body.level2 .result-box .section h3 {
+    color: #db2e75;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.level1 .result-box .section ul, body.level2 .result-box .section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+body.level1 .result-box .section li, body.level2 .result-box .section li {
+    background: #ffeded;
+    border-left: 6px solid #db2e75;
+    border-radius: 1em;
+    padding: 0.7em 1em;
+    margin-bottom: 0.5em;
+    box-shadow: 0 2px 8px rgba(219,46,117,0.06);
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.level1 .result-box .doc, body.level2 .result-box .doc {
+    background: #ffeded;
+    border-radius: 1em;
+    padding: 1em;
+    margin-bottom: 1em;
+    box-shadow: 0 2px 8px rgba(219,46,117,0.06);
+}
+
+body.level1 .result-box .doc h4, body.level2 .result-box .doc h4 {
+    color: #065f46;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.level1 .result-box .doc-text, body.level2 .result-box .doc-text {
+    background: #fff;
+    border-radius: 0.5em;
+    padding: 0.8em;
+    font-size: 1em;
+    line-height: 1.6;
+    text-align: left;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+
+
+/* Modal styles for level1 and level2 */
+body.level1 .modal-overlay, body.level2 .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+body.level1 .modal, body.level2 .modal {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+}
+
+body.level1 .modal-close, body.level2 .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5em;
+    color: #888;
+    cursor: pointer;
+}
+
+body.level1 .modal-close:hover, body.level2 .modal-close:hover {
     color: #333;
 }
 
-/* Responsive design improvements */
-@media (max-width: 1000px) {
-    .flex-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .result-box {
-        order: 3;
-        width: 100%;
-        max-width: 800px;
-    }
-    .flex-box {
-        width: 100%;
-        max-width: 400px;
-    }
+body.level1 .modal h2, body.level2 .modal h2 {
+    color: #333;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
+body.level1 .modal-form, body.level2 .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+body.level1 .modal-form input, body.level2 .modal-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+body.level1 .modal-form input:focus, body.level2 .modal-form input:focus {
+    outline: none;
+    border-color: #065f46;
+    box-shadow: 0 0 10px rgba(6, 95, 70, 0.1);
+}
+
+body.level1 .modal-submit, body.level2 .modal-submit {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+body.level1 .modal-submit:hover, body.level2 .modal-submit:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+
+/* Custom scrollbar for pending entries */
+body.level1 .pending-entries, body.level2 .pending-entries {
+    scrollbar-width: thin;
+    scrollbar-color: #db2e75 #ffeded;
+}
+
+body.level1 .pending-entries::-webkit-scrollbar, body.level2 .pending-entries::-webkit-scrollbar {
+    width: 8px;
+    background: #ffeded;
+    border-radius: 8px;
+}
+
+body.level1 .pending-entries::-webkit-scrollbar-thumb, body.level2 .pending-entries::-webkit-scrollbar-thumb {
+    background: #db2e75;
+    border-radius: 8px;
+}
+
+
+
+/* Responsive design for level1 and level2 */
 @media (max-width: 768px) {
-    .content-wrapper {
-        flex-direction: column;
-        align-items: center;
+    body.level1 .discover-knowledge, body.level2 .discover-knowledge {
+        font-size: 2.5em;
     }
     
-    .search-box {
-        width: 90%;
+    body.level1 .search-bar, body.level2 .search-bar {
+        width: 100%;
         max-width: 300px;
     }
     
-    .flex-container {
-        padding: 0 10px;
+    body.level1 .action-icons, body.level2 .action-icons {
+        gap: 1rem;
     }
     
-    .result-box {
-        padding: 15px;
-        margin: 10px;
-    }
-    
-    .doc pre {
-        font-size: 0.9em;
-        padding: 8px;
-    }
-    
-    .box {
-        width: 100%;
-        max-width: 350px;
-    }
+
 }
 
-/* Admin Panel Styles */
-.container {
-    background-color: rgba(255, 255, 255, 0.9);
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 25px;
-    border-radius: 12px;
-}
-
-form {
-    margin-bottom: 25px;
-}
-
-label {
-    display: block;
-    margin-top: 8px;
-    font-size: 14px;
-}
-
-input[type="text"], input[type="email"], input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 3px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-input[type="submit"], button {
-    margin-top: 15px;
-    padding: 10px 15px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.user-list {
-    margin-top: 40px;
-}
-
-#userList {
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.user-item {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.user-box {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.side-panel {
-    position: fixed;
-    top: 0;
-    right: -400px;
-    width: 400px;
-    height: 100%;
-    background-color: white;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-.side-panel .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.user-list-btn {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px 0 0 5px;
-    cursor: pointer;
-    transition: right 0.3s ease;
-}
-
-.user-list-btn.shifted {
-    right: 400px;
-}
-
-.user-info {
-    margin: 10px 0;
-}
-
-.update-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.delete-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.cancel-btn {
-    background-color: #808080;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-#hadith-slider {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 15px;
-    border-radius: 10px;
-    max-width: 80%;
-    z-index: 1000;
-}
-
-#hadith-content {
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 10px;
-    text-align: left;
-} 
-
-/* --- User Side Panel Styles for Admin Page --- */
-.side-panel {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: #fff;
-    overflow-x: hidden;
-    transition: 0.5s;
-    z-index: 1000;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
-    padding-top: 60px;
-    color: #222;
-}
-
-.side-panel h2 {
-    margin-top: 0;
-    padding-left: 24px;
-    color: #333;
-}
-
-#userList {
-    padding: 24px;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.user-item {
-    background: #f7f7f7;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.user-info {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.user-actions-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.update-btn, .delete-btn, .cancel-btn {
-    padding: 3px 14px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.95em;
-    cursor: pointer;
-    margin-left: 0;
-    min-width: 60px;
-}
-
-.update-btn { background: #4CAF50; color: #fff; }
-.delete-btn { background: #e53935; color: #fff; }
-.cancel-btn { background: #aaa; color: #fff; }
-
-.close-btn {
-    position: absolute;
-    top: 16px;
-    right: 24px;
-    font-size: 2em;
-    cursor: pointer;
-    color: #888;
-    transition: color 0.2s;
-    z-index: 1100;
-}
-.close-btn:hover { color: #e53935; }
-
-.user-list-btn {
-    position: fixed;
-    top: 80px;
-    right: 0;
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 8px 0 0 8px;
-    padding: 20px 12px;
-    font-size: 1em;
-    cursor: pointer;
-    z-index: 1101;
-    box-shadow: -2px 2px 8px rgba(0,0,0,0.08);
-    transition: right 0.5s, background 0.2s;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    transform: rotate(180deg);
-    white-space: nowrap;
-}
-.user-list-btn:hover {
-    background: #444;
-}
-.user-list-btn.shifted {
-    right: 400px;
-}
-
-.user-actions-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 4px;
-}
-
-#userList {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-}
-
-@media (max-width: 600px) {
-    .side-panel {
-        width: 100% !important;
-        padding-top: 40px;
-    }
-    .user-list-btn.shifted {
-        right: 100%;
-    }
-} 
+ 

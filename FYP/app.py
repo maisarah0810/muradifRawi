@@ -50,16 +50,12 @@ def load_random_hadiths(num_hadiths=5):
     try:
         
         if not os.path.exists(HADITH_FOLDER):
-            print(f"ERROR: Hadith folder does not exist at {HADITH_FOLDER}")
             return ["Hadith folder not found"]
         
         # Get list of all hadith files
         hadith_files = [f for f in os.listdir(HADITH_FOLDER) if f.endswith('.txt')]
-        print(f"Found {len(hadith_files)} hadith files")
-        print(f"First few files: {hadith_files[:5]}")
         
         if not hadith_files:
-            print("No hadith files found")
             return ["No hadith files found."]
         
         # Randomly select files
@@ -67,7 +63,6 @@ def load_random_hadiths(num_hadiths=5):
         
         for filename in selected_files:
             file_path = os.path.join(HADITH_FOLDER, filename)
-            print(f"Trying to read: {file_path}")
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read().strip()
@@ -99,8 +94,6 @@ def login_route():
         email = request.form['email']
         password = request.form['password']
         level = check_credentials(email, password)
-
-        print(f"Login attempt: user={email}, level={level}, next={next_page}")
 
         if level is not None:
             if next_page == 'verify':
@@ -160,20 +153,86 @@ def download_thesaurus():
     c = canvas.Canvas(pdf_path, pagesize=A4)
     width, height = A4
 
+    # Define margins
+    left_margin = 50
+    right_margin = 50
+    top_margin = 80
+    bottom_margin = 50
+    available_width = width - left_margin - right_margin
+
     # Title
     c.setFont("Helvetica-Bold", 16)
-    c.drawCentredString(width / 2, height - 50, "THESAURUS OF NARRATOR'S NAME")
+    c.drawCentredString(width / 2, height - top_margin, "THESAURUS OF NARRATOR'S NAME")
 
-    # Content with numbering
-    c.setFont("Helvetica", 12)
-    y = height - 80
+    # Content with proper word wrapping
+    c.setFont("Helvetica", 10)  # Smaller font for better fit
+    y = height - top_margin - 30
+    line_height = 15
+
     for idx, line in enumerate(lines, start=1):
-        if y < 50:
+        # Check if we need a new page
+        if y < bottom_margin + line_height:
             c.showPage()
-            y = height - 50
-            c.setFont("Helvetica", 12)
-        c.drawString(50, y, f"{idx}. {line}")
-        y -= 20
+            y = height - top_margin
+            c.setFont("Helvetica", 10)
+
+        # Split long lines into multiple lines
+        words = line.split(':')
+        if len(words) >= 2:
+            primary_name = words[0].strip()
+            synonyms = words[1].strip()
+            
+            # Draw primary name
+            c.drawString(left_margin, y, f"{idx}. {primary_name}:")
+            y -= line_height
+            
+            # Split synonyms by comma and wrap long text
+            synonym_list = [s.strip() for s in synonyms.split(',')]
+            current_line = ""
+            
+            for synonym in synonym_list:
+                test_line = current_line + (", " if current_line else "") + synonym
+                if c.stringWidth(test_line, "Helvetica", 10) <= available_width:
+                    current_line = test_line
+                else:
+                    # Draw current line and start new one
+                    if current_line:
+                        c.drawString(left_margin + 20, y, current_line)
+                        y -= line_height
+                        if y < bottom_margin + line_height:
+                            c.showPage()
+                            y = height - top_margin
+                            c.setFont("Helvetica", 10)
+                    current_line = synonym
+            
+            # Draw remaining line
+            if current_line:
+                c.drawString(left_margin + 20, y, current_line)
+                y -= line_height * 1.5  # Extra space between entries
+        else:
+            # Simple line without splitting
+            if c.stringWidth(f"{idx}. {line}", "Helvetica", 10) <= available_width:
+                c.drawString(left_margin, y, f"{idx}. {line}")
+            else:
+                # Split long line into multiple lines
+                words = line.split()
+                current_line = f"{idx}. "
+                for word in words:
+                    test_line = current_line + word + " "
+                    if c.stringWidth(test_line, "Helvetica", 10) <= available_width:
+                        current_line = test_line
+                    else:
+                        c.drawString(left_margin, y, current_line.strip())
+                        y -= line_height
+                        if y < bottom_margin + line_height:
+                            c.showPage()
+                            y = height - top_margin
+                            c.setFont("Helvetica", 10)
+                        current_line = word + " "
+                
+                if current_line.strip():
+                    c.drawString(left_margin, y, current_line.strip())
+                y -= line_height * 1.5
 
     c.save()
     return send_file(pdf_path, as_attachment=True, download_name=pdf_filename)

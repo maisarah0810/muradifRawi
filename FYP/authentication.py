@@ -25,7 +25,6 @@ def get_db_connection():
         )
         return conn
     except Exception as err:
-        print(f"Error while connecting to database: {err}")
         return None
 
         
@@ -44,7 +43,6 @@ def check_credentials(email, password):
                 return user['level'] # Return user level
             return None
     except Exception as e:
-        print(f"Exception during query execution: {e}")
         return None
     finally:
         conn.close()

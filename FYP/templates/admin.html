@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>Admin Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleAdmin.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Admin Panel</h1>
+        <!-- Logout Button -->
+        <form method="get" action="{{ url_for('index') }}">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
 
         <!-- Add New User Form -->
         <h2>Add New User</h2>
@@ -28,13 +31,6 @@
             <input type="number" name="level" min="0" max="2" required>
 
             <input type="submit" value="Add User">
-        </form>
-
-
-
-        <!-- Logout Button -->
-        <form method="get" action="{{ url_for('index') }}">
-            <button type="submit">Logout</button>
         </form>
 
         <!-- SweetAlert for Flash Messages -->

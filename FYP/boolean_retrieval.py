@@ -5,7 +5,6 @@ from preprocessing import preprocess_query
 def load_index(filepath):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     full_path = os.path.join(base_dir, filepath)
-    print("Loading file from:", full_path)
 
     with open(full_path, 'r', encoding='utf-8') as f:
         index = {}

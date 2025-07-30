@@ -6,65 +6,114 @@
     <title>muradifRawi</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
+<body class="level2">
 
-<div class="top-buttons">
+<header>
+    <span class="muradif-title">muradifRawi</span>
     <form method="get" action="{{ url_for('index') }}">
-        <button type="submit">LOGOUT</button>
+        <button type="submit" class="logout-btn">Logout</button>
     </form>
-    <a href="{{ url_for('login_route') }}">
-        
-        <button>LOGIN</button>
-    </a>
-</div>
+</header>
+<main>
+    <div class="intro-section">
+        <div class="discover-knowledge">
+            <i class='bx bxs-star'></i>
+            Discover Knowledge
+            <i class='bx bxs-star'></i>
+        </div>
+        <div class="subtitle">
+            Retrieve Hadiths Based on the Synonyms of Narrator's Name Using Boolean Model
+        </div>
+        <form method="POST" action="/level2" class="search-bar-container">
+            <input type="hidden" name="form_type" value="search">
+            {% for entry in added_entries %}
+                <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
+            {% endfor %}
+            <i class='bx bx-search'></i>
+            <input type="text" id="narrator_name" name="narrator_name" placeholder="Enter narrator name" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
-<h1>muradifRawi</h1>
-<p class="subtitle">RETRIEVE HADITS BASED ON THE SYNONYMS OF NARRATOR'S NAME USING BOOLEAN MODEL</p>
-
-<div class="search-box">
-    <form method="POST" action="/level2">
-        <input type="hidden" name="form_type" value="search">
-        {% for entry in added_entries %}
-            <input type="hidden" name="added_entries" value="{{ entry[0] }}|{{ entry[1] }}|{{ entry[2] }}">
-        {% endfor %}
-        <input type="text" name="narrator_name" placeholder="Enter narrator name" required>
-        <br>
-        <button type="submit">search</button>
-    </form>
+<div class="action-icons">
+    <div class="action-icon" onclick="openModal('addName')">
+        <i class='bx bx-bookmark'></i>
+        <span>Add new name</span>
+    </div>
+    <div class="action-icon" onclick="openModal('addIndex')">
+        <i class='bx bx-purchase-tag'></i>
+        <span>Add new index</span>
+    </div>
+    <div class="action-icon" onclick="downloadThesaurusFile()">
+        <i class='bx bx-book-open'></i>
+        <span>Download thesaurus file</span>
+    </div>
 </div>
 
 <div class="flex-container">
-    <!-- Add New Name Box (Left) -->
+    <!-- Pending Names Box -->
     <div class="flex-box box">
-        <h2>Add new name</h2>
-        <form method="POST" action="/level2">
-            <input type="hidden" name="form_type" value="add">
-            <label>Name:</label><br>
-            <input type="text" name="base_name" required><br>
+        <h2>Pending new narrator names</h2>
+        <div class="pending-entries">
+            {% if added_entries %}
+            {% for entry in added_entries %}
+                <div class="entry-box">
+                    <p><strong>Name:</strong> {{ entry['base_name'] }}</p>
+                    <p><strong>Synonym:</strong> {{ entry['synonym'] }}</p>
+                    <p><strong>Index:</strong> {{ entry['index_value'] }}</p>
 
-            <label>Synonym:</label><br>
-            <input type="text" name="new_synonym" required><br>
+                    <div style="display: flex; justify-content: space-between; gap: 1px; margin-top: 5px;">
+                        <form method="POST" action="{{ url_for('level2_bp.approve_entry_route') }}">
+                            <input type="hidden" name="base_name" value="{{ entry['base_name'] }}">
+                            <input type="hidden" name="synonym" value="{{ entry['synonym'] }}">
+                            <input type="hidden" name="index_value" value="{{ entry['index_value'] }}">
+                            <button type="submit" style="background-color: #41cb5a; width: 100px;">Approve</button>
+                        </form>
 
-            <label>Index:</label><br>
-            <input type="text" name="index" required><br>
+                        <form method="POST" action="{{ url_for('level2_bp.reject_entry_route') }}">
+                            <input type="hidden" name="new_name" value="{{ entry['synonym'] }}">
+                            <button type="submit" style="background-color: #e53935; width: 100px;">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+                <p>No pending entries to verify.</p>
+            {% endif %}
+        </div>
 
-            <button type="submit">submit</button>
-        </form>
+        <h2>Pending index entries</h2>
+        <div class="pending-entries">
+            {% if pending_index_entries %}
+            {% for entry in pending_index_entries %}
+                <div class="entry-box">
+                    <p><strong>Name:</strong> {{ entry['name'] }}</p>
+                    <p><strong>Indexes:</strong> {{ entry['indexes'] }}</p>
+                    <p><strong>New Indexes Only:</strong> {{ entry['new_indexes_only'] }}</p>
+                    <p><strong>Is New Name:</strong> {{ 'Yes' if entry['is_new_name'] else 'No' }}</p>
 
-        <hr style="margin: 20px 0; border: 1px solid #ccc;">
+                    <div style="display: flex; justify-content: space-between; gap: 1px; margin-top: 5px;">
+                        <form method="POST" action="{{ url_for('level2_bp.approve_index_entry_route') }}">
+                            <input type="hidden" name="name" value="{{ entry['name'] }}">
+                            <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
+                            <input type="hidden" name="is_new_name" value="{{ 'true' if entry['is_new_name'] else 'false' }}">
+                            <button type="submit" style="background-color: #41cb5a; width: 100px;">Approve</button>
+                        </form>
 
-        <h2>Add new index</h2>
-        <form method="POST" action="/level2">
-            <input type="hidden" name="form_type" value="add_index">
-            <label>Narrator Name:</label><br>
-            <input type="text" name="narrator_name" required><br>
-
-            <label>Index Number(s):</label><br>
-            <input type="text" name="index_numbers" placeholder="e.g., 123, 456, 789" required><br>
-
-            <button type="submit">Add New Index</button>
-        </form>
+                        <form method="POST" action="{{ url_for('level2_bp.reject_index_entry_route') }}">
+                            <input type="hidden" name="name" value="{{ entry['name'] }}">
+                            <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
+                            <button type="submit" style="background-color: #e53935; width: 100px;">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+                <p>No pending index entries to verify.</p>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Search Results (Center) -->
@@ -88,92 +137,49 @@
         <div class="section">
             <h3>Related Hadith Documents</h3>
             {% if documents %}
-                                    {% for doc in documents %}
-                        <div class="doc" style="font-size: 14px; color: #000; margin-bottom: 15px;">
-                            <h4 style="color: #000; font-size: 14px; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ loop.index }}. {{ doc.filename }}</h4>
-                            <pre style="font-size: 12px; color: #000; text-align: justify; font-family: 'California FB', 'Segoe UI', Arial, sans-serif;">{{ doc.content | safe }}</pre>
-                        </div>
-                    {% endfor %}
+                            {% for doc in documents %}
+                                <div class="doc">
+                                    <h4>{{ loop.index }}. {{ doc.filename }}</h4>
+                                    <div class="doc-text">{{ doc.content | safe }}</div>
+                                </div>
+                            {% endfor %}
             {% else %}
                 <p>No related documents found.</p>
             {% endif %}
         </div>
     </div>
-    {% else %}
-    <div class="flex-box result-box" style="visibility: hidden;"></div>
     {% endif %}
+</div>
 
-    <!-- Pending Names Box (Right) -->
-    <div class="flex-box box">
-        <h2>Pending new narrator names</h2>
-        {% if added_entries %}
-        {% for entry in added_entries %}
-            <div class="entry-box" style="font-size: 1.1em;">
-                <p><strong>Name:</strong> {{ entry['base_name'] }}</p>
-                <p><strong>Synonym:</strong> {{ entry['synonym'] }}</p>
-                <p><strong>Index:</strong> {{ entry['index_value'] }}</p>
-
-
-                <div style="display: flex; justify-content: space-between; gap: 1px; margin-top: 5px;">
-                    <form method="POST" action="{{ url_for('level2_bp.approve_entry_route') }}">
-                        <input type="hidden" name="base_name" value="{{ entry['base_name'] }}">
-                        <input type="hidden" name="synonym" value="{{ entry['synonym'] }}">
-                        <input type="hidden" name="index_value" value="{{ entry['index_value'] }}">
-                        <button type="submit" style="background-color: #41cb5a; width: 100px;">Approve</button>
-                    </form>
-
-                    <form method="POST" action="{{ url_for('level2_bp.reject_entry_route') }}">
-                        <input type="hidden" name="new_name" value="{{ entry['synonym'] }}">
-                        <button type="submit" style="background-color: #e53935; width: 100px;">Reject</button>
-                    </form>
-                </div>
-
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No pending entries to verify.</p>
-    {% endif %}
-
-        <hr style="margin: 20px 0; border: 1px solid #ccc;">
-
-        <h2>Pending index entries</h2>
-        {% if pending_index_entries %}
-        {% for entry in pending_index_entries %}
-            <div class="entry-box" style="font-size: 1.1em;">
-                <p><strong>Name:</strong> {{ entry['name'] }}</p>
-                <p><strong>Indexes:</strong> {{ entry['indexes'] }}</p>
-                <p><strong>New Indexes Only:</strong> {{ entry['new_indexes_only'] }}</p>
-                <p><strong>Is New Name:</strong> {{ 'Yes' if entry['is_new_name'] else 'No' }}</p>
-
-                <div style="display: flex; justify-content: space-between; gap: 1px; margin-top: 5px;">
-                    <form method="POST" action="{{ url_for('level2_bp.approve_index_entry_route') }}">
-                        <input type="hidden" name="name" value="{{ entry['name'] }}">
-                        <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
-                        <input type="hidden" name="is_new_name" value="{{ 'true' if entry['is_new_name'] else 'false' }}">
-                        <button type="submit" style="background-color: #41cb5a; width: 100px;">Approve</button>
-                    </form>
-
-                    <form method="POST" action="{{ url_for('level2_bp.reject_index_entry_route') }}">
-                        <input type="hidden" name="name" value="{{ entry['name'] }}">
-                        <input type="hidden" name="indexes" value="{{ entry['indexes'] }}">
-                        <button type="submit" style="background-color: #e53935; width: 100px;">Reject</button>
-                    </form>
-                </div>
-
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No pending index entries to verify.</p>
-    {% endif %}
-
-        <a href="{{ url_for('download_thesaurus') }}">
-            <button style="margin-top: 20px;">Download Thesaurus PDF</button>
-        </a>
+<!-- Modal for Add New Name -->
+<div class="modal-overlay" id="addNameModal">
+    <div class="modal">
+        <span class="modal-close" onclick="closeModal('addName')">&times;</span>
+        <h2>Add New Name</h2>
+        <form method="POST" action="/level2" class="modal-form">
+            <input type="hidden" name="form_type" value="add">
+            <input type="text" name="base_name" placeholder="Name" required>
+            <input type="text" name="new_synonym" placeholder="Synonym" required>
+            <input type="text" name="index" placeholder="Index" required>
+            <button type="submit" class="modal-submit">Submit</button>
+        </form>
     </div>
 </div>
 
-
-
+<!-- Modal for Add New Index -->
+<div class="modal-overlay" id="addIndexModal">
+    <div class="modal">
+        <span class="modal-close" onclick="closeModal('addIndex')">&times;</span>
+        <h2>Add New Index</h2>
+        <form method="POST" action="/level2" class="modal-form">
+            <input type="hidden" name="form_type" value="add_index">
+            <input type="text" name="narrator_name" placeholder="Narrator" required>
+            <input type="text" name="index_numbers" placeholder="Index" required>
+            <button type="submit" class="modal-submit">Submit</button>
+        </form>
+    </div>
+</div>
+</main>
 
 <!-- Flash Message -->
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -189,5 +195,62 @@
     </script>
   {% endif %}
 {% endwith %}
+
+<script>
+function openModal(type) {
+    if (type === 'addName') {
+        document.getElementById('addNameModal').style.display = 'flex';
+    } else if (type === 'addIndex') {
+        document.getElementById('addIndexModal').style.display = 'flex';
+    }
+}
+
+function closeModal(type) {
+    if (type === 'addName') {
+        document.getElementById('addNameModal').style.display = 'none';
+    } else if (type === 'addIndex') {
+        document.getElementById('addIndexModal').style.display = 'none';
+    }
+}
+
+function downloadThesaurus() {
+    // Add download functionality here
+    alert('Download thesaurus file functionality will be implemented here');
+}
+
+function downloadThesaurusFile() {
+    window.location.href = "{{ url_for('download_thesaurus') }}";
+}
+
+// Add search-active class when search is performed
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.querySelector('.search-bar-container form[method="POST"]');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function() {
+            const flexContainer = document.querySelector('.flex-container');
+            if (flexContainer) {
+                flexContainer.classList.add('search-active');
+            }
+        });
+    }
+    
+    // Add search-active class if results are already present
+    const resultBox = document.querySelector('.result-box');
+    if (resultBox && resultBox.style.visibility !== 'hidden') {
+        const flexContainer = document.querySelector('.flex-container');
+        if (flexContainer) {
+            flexContainer.classList.add('search-active');
+        }
+    }
+});
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal-overlay')) {
+        event.target.style.display = 'none';
+    }
+}
+</script>
+
 </body>
 </html>
