@@ -113,6 +113,8 @@
                                         <div><strong>Index:</strong> {{ entry['index_value'] }}</div>
                                     </div>
                                 {% endfor %}
+                            {% else %}
+                             <p>No pending entries.</p>
                             {% endif %}
                         </div>
                         <button onclick="showNotQualifiedAlert()">Add name</button>

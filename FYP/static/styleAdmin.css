@@ -104,6 +104,7 @@ h2 {
     text-align: center;
     box-shadow: 0 2px 8px rgba(154,62,105,0.10);
     transition: transform 0.15s, box-shadow 0.15s;
+    z-index: 1000;
 }
 
 .logout-btn:hover {
@@ -383,42 +384,44 @@ h2 {
     display: none;
     background: #ffeded;
     border-radius: 20px;
-    padding: 25px;
-    margin-top: 20px;
+    padding: 15px;
+    margin-top: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 #updateForm h3 {
     color: #065f46;
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
 #updateForm form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 6px;
 }
 
 #updateForm label {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 #updateForm input[type="text"], 
 #updateForm input[type="email"], 
 #updateForm input[type="number"] {
-    padding: 12px 16px;
+    padding: 8px 12px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.9);
     color: #333;
-    font-size: 14px;
+    font-size: 15px;
     transition: all 0.3s ease;
 }
 
@@ -426,18 +429,39 @@ h2 {
     background: linear-gradient(90deg, #4CAF50 0%, #45a049 100%);
     color: white;
     border: none;
-    border-radius: 15px;
-    padding: 12px 20px;
-    font-size: 14px;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 #updateForm input[type="submit"]:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-} 
+}
+
+#updateForm .cancel-btn {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    margin-left: 8px;
+}
+
+#updateForm .cancel-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
